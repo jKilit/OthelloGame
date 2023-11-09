@@ -1,3 +1,5 @@
+package com.example.othello
+
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -7,11 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.othello.Screen
 
 @Composable
-fun StartScreen(navController: NavController) {
+fun GameScreen() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -19,11 +19,8 @@ fun StartScreen(navController: NavController) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Button(onClick = {
-            navController.navigate(Screen.Game.route)
-        }) {
-            Text("Start Game")
+        Button(onClick = { /* TODO: Implement start game */ }) {
+            Text("gamescreen")
         }
     }
 }
-
