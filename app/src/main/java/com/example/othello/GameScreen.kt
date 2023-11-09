@@ -20,7 +20,7 @@ fun GameScreen() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Button(onClick = { /* TODO: Implement start game */ }) {
-            Text("gamescreen")
+            Text("GameScreen")
         }
     }
 }

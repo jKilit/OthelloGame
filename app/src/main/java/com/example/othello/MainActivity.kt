@@ -81,10 +81,12 @@ class MainActivity : ComponentActivity() {
                                     startDestination = Screen.Start.route
                                 ) {
                                     composable(route = Screen.Start.route) {
+                                        topBarTitle = ""
+                                        showBackButton = false
                                         StartScreen(navController = navController)
                                     }
                                     composable(route = Screen.Game.route) {
-                                       // topBarTitle = "Game Screen"
+                                        topBarTitle = "Game Screen"
                                         showBackButton = true
                                         GameScreen()
                                     }
