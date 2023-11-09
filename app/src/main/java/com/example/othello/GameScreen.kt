@@ -36,6 +36,7 @@ fun GameScreen() {
         ) {
             items(64) { index ->
                 tiles(color = Color.Black)
+
                 //call what is suppsoed to be inside like cardview
             }
         }
@@ -43,13 +44,15 @@ fun GameScreen() {
 }
 
 @Composable
-fun tiles (color: Color){
+fun tiles(color: Color) {
     Button(
-        onClick = { /*TODO*/ },
-        modifier = Modifier.aspectRatio(1f),
-        colors= ButtonDefaults.buttonColors(containerColor = color),
+        onClick = { },
+        modifier = Modifier
+            .aspectRatio(1f)
+            .padding(2.dp), // Adjust the padding value as needed
+        colors = ButtonDefaults.buttonColors(containerColor = color),
         shape = CircleShape,
     ) {
-        
+
     }
 }
