@@ -95,6 +95,11 @@ class MainActivity : ComponentActivity() {
                                         showBackButton = true
                                         GameOverScreen()
                                     }
+                                    composable(route = Screen.Settings.route) {
+                                        topBarTitle = "Settings"
+                                        showBackButton = true
+                                        SettingsScreen(navController = navController)
+                                    }
                                 }
                             }
                         }

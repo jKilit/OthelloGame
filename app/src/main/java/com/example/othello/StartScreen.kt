@@ -54,6 +54,12 @@ fun StartScreen(navController: NavController) {
             Text("Start Game")
         }
 
+        Button(onClick = {
+            navController.navigate(Screen.Settings.route)
+        }) {
+            Text("Settings")
+        }
+
 
         Text(
             text = "About Othello:\nOthello is a classic strategy board game for two players. It's also known as Reversi." +
