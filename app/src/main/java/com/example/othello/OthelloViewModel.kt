@@ -24,12 +24,12 @@ fun flip(tile: Tile) {
     }
 }
 
-fun putBlack(tile: Tile) {
+fun makeBlack(tile: Tile) {
     tile.isBlack = true
     tile.isWhite = false
 }
 
-fun putWhite(tile: Tile) {
+fun makeWhite(tile: Tile) {
     tile.isWhite = true
     tile.isBlack = false
 }
@@ -40,20 +40,20 @@ class OthelloViewModel : ViewModel() {
         const val BOARD_SIZE = 8
     }
 
-    private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { x ->
+    private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { x -> //2d lista för logik
         List(BOARD_SIZE) { y ->
             Tile(x, y, isBlack = false, isWhite = false)
         }
     }
 
     // MutableStateList is used to observe changes to the list in Compose
-     val boardState = mutableStateListOf<Tile>().apply {
+     val boardState = mutableStateListOf<Tile>().apply {//skapar en 1d lista av 2d gameboard och lägger den i boardstate
         addAll(gameBoard.flatten())
     }
 
     private var isBlackTurn = true
 
-    init {
+    init { //initziering block, koden körs när othello classen skapas
         // Initialize the starting position of Othello
         putPiece(3, 3, true)
         putPiece(3, 4, false)
@@ -72,18 +72,16 @@ class OthelloViewModel : ViewModel() {
         }
     }
 
-    // Check if the move is valid
-    private fun isValidMove(tile: Tile): Boolean {
-        return tile.isEmpty() && hasFlippableTiles(tile.x, tile.y)
-    }
+    //private fun isValidMove(tile: Tile): Boolean {
+    //}
 
     // Place a piece on the board
     private fun putPiece(x: Int, y: Int, isBlack: Boolean) {
         val tile = getTile(x, y)
         if (isBlack) {
-            putBlack(tile)
+            makeBlack(tile)
         } else {
-            putWhite(tile)
+            makeWhite(tile)
         }
     }
 
