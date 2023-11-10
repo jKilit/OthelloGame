@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 
 //FIXA DENNA, Implementera en kallelse från Gamescreen också där man kollar if gameIsOver och skicka in dem parametrar som behövs hit
 @Composable
-fun GameOverScreen(/*winningPlayer: Player, stats String,*/ onRestart: () -> Unit) {
+fun GameOverScreen(/*winningPlayer: Player, stats String, onRestart: () -> Unit*/) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,9 +38,8 @@ fun GameOverScreen(/*winningPlayer: Player, stats String,*/ onRestart: () -> Uni
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = onRestart) {
-            Text("Restart Game")
+       /* Button(onClick = onRestart) {
+            Text("Restart Game") */
             //FIX
         }
     }
-}

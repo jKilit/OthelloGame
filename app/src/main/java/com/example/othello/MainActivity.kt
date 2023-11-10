@@ -90,6 +90,11 @@ class MainActivity : ComponentActivity() {
                                         showBackButton = true
                                         GameScreen()
                                     }
+                                    composable(route = Screen.GameOver.route) {
+                                        topBarTitle = "Game Over"
+                                        showBackButton = true
+                                        GameOverScreen()
+                                    }
                                 }
                             }
                         }
@@ -100,18 +105,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    OthelloTheme {
-        Greeting("Android")
-    }
-}
