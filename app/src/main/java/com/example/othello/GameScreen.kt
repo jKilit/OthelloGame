@@ -29,7 +29,8 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .background(Color.Green), // Set the background color to green
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
