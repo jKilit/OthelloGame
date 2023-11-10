@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -18,9 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun GameScreen() {
+fun GameScreen(viewModel: OthelloViewModel = viewModel()) {
+    val gameBoard = viewModel.boardState
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,27 +36,38 @@ fun GameScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyVerticalGrid(
-            columns = GridCells.Fixed(8),
+            columns = GridCells.Fixed(OthelloViewModel.BOARD_SIZE),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(64) { index ->
-                tilesView(color = Color.Black)
-
-                //call what is suppsoed to be inside like cardview
+            items(gameBoard) { tile ->
+                TileView(tile = tile, onClick = {
+                    viewModel.makeMove(tile.x, tile.y)
+                })
             }
         }
+
+        // Displaying scores
+        val (blackScore, whiteScore) = viewModel.getScores()
+        Text("Black: $blackScore, White: $whiteScore")
     }
 }
 
 @Composable
-fun tilesView(color: Color) {
+fun TileView(tile: Tile, onClick: () -> Unit) {
     Button(
-        onClick = { },
+        onClick = onClick,
         modifier = Modifier
-            .size(50.dp) // Set the size to make it square, adjust the value as needed
+            .size(50.dp)
             .padding(2.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = color),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = when {
+                tile.isBlack -> Color.Black
+                tile.isWhite -> Color.White
+                else -> Color.Gray
+            }
+        )
     ) {
-
+        // Empty for now
     }
 }
+

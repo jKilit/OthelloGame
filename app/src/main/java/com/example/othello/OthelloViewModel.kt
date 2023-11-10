@@ -47,7 +47,7 @@ class OthelloViewModel : ViewModel() {
     }
 
     // MutableStateList is used to observe changes to the list in Compose
-    private val boardState = mutableStateListOf<Tile>().apply {
+    val boardState = mutableStateListOf<Tile>().apply {
         addAll(gameBoard.flatten())
     }
 
