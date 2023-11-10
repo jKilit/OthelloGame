@@ -35,7 +35,7 @@ fun GameScreen() {
             modifier = Modifier.fillMaxSize()
         ) {
             items(64) { index ->
-                tiles(color = Color.Black)
+                tilesView(color = Color.Black)
 
                 //call what is suppsoed to be inside like cardview
             }
@@ -44,7 +44,7 @@ fun GameScreen() {
 }
 
 @Composable
-fun tiles(color: Color) {
+fun tilesView(color: Color) {
     Button(
         onClick = { },
         modifier = Modifier
