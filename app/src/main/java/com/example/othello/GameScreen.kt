@@ -48,10 +48,9 @@ fun tiles(color: Color) {
     Button(
         onClick = { },
         modifier = Modifier
-            .aspectRatio(1f)
-            .padding(2.dp), // Adjust the padding value as needed
+            .size(50.dp) // Set the size to make it square, adjust the value as needed
+            .padding(2.dp),
         colors = ButtonDefaults.buttonColors(containerColor = color),
-        shape = CircleShape,
     ) {
 
     }
