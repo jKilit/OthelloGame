@@ -66,9 +66,13 @@ class OthelloViewModel : ViewModel() {
         val selectedTile = getTile(x, y)
 
         if (isValidMove(selectedTile)) {
-            putPiece(x, y, isBlackTurn)
+            if (isBlackTurn) {
+                putBlack(selectedTile)
+            } else {
+                putWhite(selectedTile)
+            }
             flipTiles(x, y)
-            isBlackTurn = !isBlackTurn
+            isBlackTurn = !isBlackTurn  // Switch turn after a valid move
         }
     }
 

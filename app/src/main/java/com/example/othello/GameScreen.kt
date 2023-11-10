@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
@@ -30,7 +31,8 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel()) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(Color.Green), // Set the background color to green
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color.DarkGray),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
