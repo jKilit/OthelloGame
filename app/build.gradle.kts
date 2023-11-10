@@ -62,6 +62,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.1.2")
     implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation("io.github.jan-tennert.supabase:realtime-kt:1.4.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
     implementation("io.ktor:ktor-client-okhttp:2.3.5")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     testImplementation("junit:junit:4.13.2")
