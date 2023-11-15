@@ -77,8 +77,8 @@ class OthelloViewModel : ViewModel() {
         }
     }
 
-    private fun isValidMove(tile: Tile): Boolean {
-        return true
+    fun isValidMove(tile: Tile): Boolean {
+        return tile.isEmpty()
     }
 
     // Place a piece on the board
