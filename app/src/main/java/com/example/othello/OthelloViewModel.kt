@@ -77,9 +77,50 @@ class OthelloViewModel : ViewModel() {
         }
     }
 
+    // Inside OthelloViewModel
     fun isValidMove(tile: Tile): Boolean {
-        return tile.isEmpty()
+        if (!tile.isEmpty()) {
+            return false // Cannot place a tile on an already occupied position
+        }
+
+        for (i in -1..1) {
+            for (j in -1..1) {
+                if (i == 0 && j == 0) continue // Skip the current tile
+
+                val adjacentTile = getTile(tile.x + i, tile.y + j)
+
+                if (isValidDirection(tile, adjacentTile, i, j)) {
+                    return true
+                }
+            }
+        }
+
+        return false
     }
+
+    private fun isValidDirection(tile: Tile, adjacentTile: Tile, deltaX: Int, deltaY: Int): Boolean {
+        // Check if the adjacent tile is of the opposite color
+        if ((isBlackTurn && adjacentTile.isWhite) || (!isBlackTurn && adjacentTile.isBlack)) {
+            var x = tile.x + deltaX
+            var y = tile.y + deltaY
+
+            while (x in 0 until BOARD_SIZE && y in 0 until BOARD_SIZE) {
+                val currentTile = getTile(x, y)
+
+                if (currentTile.isEmpty()) {
+                    return false // Empty tile, invalid move
+                } else if ((isBlackTurn && currentTile.isBlack) || (!isBlackTurn && currentTile.isWhite)) {
+                    return true // Found a valid sequence to flip
+                }
+
+                x += deltaX
+                y += deltaY
+            }
+        }
+
+        return false
+    }
+
 
     // Place a piece on the board
     private fun putPiece(x: Int, y: Int, isBlack: Boolean) {
