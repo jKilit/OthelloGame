@@ -44,7 +44,7 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel()) {
         ) {
             items(gameBoard) { tile ->
                 TileView(tile = tile, onClick = {
-                    viewModel.makeMove(tile.y, tile.x)
+                    viewModel.makeMove(tile.x, tile.y)
                 })
             }
         }

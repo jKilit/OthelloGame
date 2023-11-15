@@ -134,7 +134,7 @@ class OthelloViewModel : ViewModel() {
 
     // Get the tile at a specific position
     private fun getTile(x: Int, y: Int): Tile {
-        return boardState[y * BOARD_SIZE + x]
+        return boardState[x * BOARD_SIZE + y]
     }
 
     // Get the current state of the game board
