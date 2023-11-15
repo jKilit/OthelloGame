@@ -71,6 +71,7 @@ class OthelloViewModel : ViewModel() {
             } else {
                 makeWhite(selectedTile)
             }
+            updateBoardState()//After flip?
             flipTiles(x, y)
             isBlackTurn = !isBlackTurn  // Switch turn after a valid move
         }
@@ -140,10 +141,11 @@ class OthelloViewModel : ViewModel() {
     fun getGameBoard(): List<List<Tile>> {
         return boardState.chunked(BOARD_SIZE)
     }
+    private fun updateBoardState() {
+        boardState.clear()
+        boardState.addAll(gameBoard.flatten())
+    }
 
-    // Get the current scores
-// Get the current scores
-// Get the current scores
     fun getScores(): Pair<Int, Int> {
         var blackScore = 0
         var whiteScore = 0

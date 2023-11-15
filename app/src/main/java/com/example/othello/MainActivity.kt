@@ -86,7 +86,7 @@ class MainActivity : ComponentActivity() {
                                         StartScreen(navController = navController)
                                     }
                                     composable(route = Screen.Game.route) {
-                                        topBarTitle = "Game Screen"
+                                        topBarTitle = "Go back Home"
                                         showBackButton = true
                                         GameScreen()
                                     }
