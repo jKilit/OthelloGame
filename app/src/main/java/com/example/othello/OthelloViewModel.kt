@@ -118,9 +118,33 @@ class OthelloViewModel : ViewModel() {
     }
 
     private fun hasFlippableTilesHorizontal(x: Int, y: Int): Boolean {
-        // Add your logic to check for flippable tiles horizontally
-        return true
+        val currentTile = getTile(x, y)
+
+        // Check to the left
+        var leftFlippable = false
+        var leftX = x - 1
+        while (leftX >= 0 && getTile(leftX, y).isWhite != currentTile.isWhite) {//checks if colors are different
+            if (getTile(leftX, y).isEmpty()) { //https://chat.openai.com/share/b99130fd-406e-493e-8df0-847ae1bdb512
+                leftFlippable = true
+                break
+            }
+            leftX--
+        }
+
+        // Check to the right
+        var rightFlippable = false
+        var rightX = x + 1
+        while (rightX < BOARD_SIZE && getTile(rightX, y).isWhite != currentTile.isWhite) {
+            if (getTile(rightX, y).isEmpty()) {
+                rightFlippable = true
+                break
+            }
+            rightX++
+        }
+
+        return leftFlippable || rightFlippable
     }
+
 
     private fun hasFlippableTilesVertical(x: Int, y: Int): Boolean {
         // Add your logic to check for flippable tiles vertically
@@ -137,10 +161,6 @@ class OthelloViewModel : ViewModel() {
         return boardState[x * BOARD_SIZE + y]
     }
 
-    // Get the current state of the game board
-    fun getGameBoard(): List<List<Tile>> {
-        return boardState.chunked(BOARD_SIZE)
-    }
     private fun updateBoardState() {
         boardState.clear()
         boardState.addAll(gameBoard.flatten())
