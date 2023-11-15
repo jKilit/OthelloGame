@@ -62,7 +62,7 @@ class OthelloViewModel : ViewModel() {
     }
 
     // Function to handle a move
-    fun makeMove(x: Int, y: Int) {
+   fun makeMove(x: Int, y: Int) {
         val selectedTile = getTile(x, y)
 
         if (isValidMove(selectedTile)) {
@@ -76,8 +76,9 @@ class OthelloViewModel : ViewModel() {
         }
     }
 
-    //private fun isValidMove(tile: Tile): Boolean {
-    //}
+    private fun isValidMove(tile: Tile): Boolean {
+        return true
+    }
 
     // Place a piece on the board
     private fun putPiece(x: Int, y: Int, isBlack: Boolean) {
