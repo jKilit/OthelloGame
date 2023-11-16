@@ -259,6 +259,8 @@ class OthelloViewModel : ViewModel() {
         return upFlippable || downFlippable
     }
 
+
+    //https://chat.openai.com/share/e37a834a-e229-4bd9-a741-2e4818dd9a3f
     private fun hasFlippableTilesDiagonal(x: Int, y: Int): Boolean {
         val currentTile = getTile(x, y)
 
