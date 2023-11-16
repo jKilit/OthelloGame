@@ -167,7 +167,27 @@ class OthelloViewModel : ViewModel() {
 
     private fun flipVertical(x: Int, y: Int) {
         if(hasFlippableTilesVertical(x,y)){
+            val currentTile = getTile(x, y)
 
+            // Flip tiles up
+            var upY = y - 1
+            while (upY >= 0 && getTile(x, upY).isWhite != currentTile.isWhite) {
+                if (getTile(x, upY).isEmpty()) {
+                    break
+                }
+                flip(x, upY)
+                upY--
+            }
+
+            // Flip tiles down
+            var downY = y + 1
+            while (downY < BOARD_SIZE && getTile(x, downY).isWhite != currentTile.isWhite) {
+                if (getTile(x,downY).isEmpty()) {
+                    break
+                }
+                flip(x, downY)
+                downY++
+            }
         }
     }
 
