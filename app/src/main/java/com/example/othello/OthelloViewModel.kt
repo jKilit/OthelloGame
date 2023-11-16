@@ -243,23 +243,56 @@ class OthelloViewModel : ViewModel() {
         val currentTile = getTile(x, y)
 
         var topLeftFlippable = false
-        var diagX = x - 1
-        var diagY = y - 1
-        while (diagX >= 0 && diagY >= 0 && getTile(diagX, diagY).isWhite != currentTile.isWhite) {
-            if (getTile(diagX, diagY).isEmpty()) {
+        var topLeftX = x - 1
+        var topLeftY = y - 1
+        while (topLeftX >= 0 && topLeftY >= 0 && getTile(topLeftX, topLeftY).isWhite != currentTile.isWhite) {
+            if (getTile(topLeftX, topLeftY).isEmpty()) {
                 topLeftFlippable = true
                 break
             }
-            diagX--
-            diagY--
+            topLeftX--
+            topLeftY--
         }
-        // do these
+
         var topRightFlippable = false
+        var topRightX = x - 1
+        var topRightY = y + 1
+        while (topRightX >= 0 && topRightY < BOARD_SIZE && getTile(topRightX, topRightY).isWhite != currentTile.isWhite) {
+            if (getTile(topRightX, topRightY).isEmpty()) {
+                topRightFlippable = true
+                break
+            }
+            topRightX--
+            topRightY++
+        }
+
         var bottomLeftFlippable = false
+        var bottomLeftX = x + 1
+        var bottomLeftY = y - 1
+        while (bottomLeftX < BOARD_SIZE && bottomLeftY >= 0 && getTile(bottomLeftX, bottomLeftY).isWhite != currentTile.isWhite) {
+            if (getTile(bottomLeftX, bottomLeftY).isEmpty()) {
+                bottomLeftFlippable = true
+                break
+            }
+            bottomLeftX++
+            bottomLeftY--
+        }
+
         var bottomRightFlippable = false
+        var bottomRightX = x + 1
+        var bottomRightY = y + 1
+        while (bottomRightX < BOARD_SIZE && bottomRightY < BOARD_SIZE && getTile(bottomRightX, bottomRightY).isWhite != currentTile.isWhite) {
+            if (getTile(bottomRightX, bottomRightY).isEmpty()) {
+                bottomRightFlippable = true
+                break
+            }
+            bottomRightX++
+            bottomRightY++
+        }
 
         return topLeftFlippable || topRightFlippable || bottomLeftFlippable || bottomRightFlippable
     }
+
 
 
     // Get the tile at a specific position
