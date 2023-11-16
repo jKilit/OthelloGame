@@ -13,15 +13,6 @@ data class Tile(
         return !isBlack && !isWhite
     }
 }
-fun makeBlack(tile: Tile) {
-    tile.isBlack = true
-    tile.isWhite = false
-}
-
-fun makeWhite(tile: Tile) {
-    tile.isWhite = true
-    tile.isBlack = false
-}
 
 class OthelloViewModel : ViewModel() {
 
@@ -44,10 +35,10 @@ class OthelloViewModel : ViewModel() {
 
     init { //initziering block, koden körs när othello classen skapas
         // Initialize the starting position of Othello
-        putPiece(3, 3, true)
-        putPiece(3, 4, false)
-        putPiece(4, 3, false)
-        putPiece(4, 4, true)
+        makeBlack(3, 3)
+        makeWhite(3, 4)
+        makeWhite(4, 3)
+        makeBlack(4, 4)
     }
 
     fun flip(x: Int, y: Int) { //inside viewmodel now
@@ -61,15 +52,27 @@ class OthelloViewModel : ViewModel() {
         }
     }
 
+    fun makeBlack(x: Int, y: Int) {
+        var current= getTile(x,y)
+        current.isBlack = true
+        current.isWhite = false
+    }
+
+    fun makeWhite(x: Int, y: Int) {
+        var current= getTile(x,y)
+        current.isBlack = false
+        current.isWhite = true
+    }
+
     // Function to handle a move
-   fun makeMove(x: Int, y: Int) {
+   fun makeMove(x: Int, y: Int) {//göra specifika movet
         val selectedTile = getTile(x, y)
 
         if (isValidMove(selectedTile)) {
             if (isBlackTurn) {
-                makeBlack(selectedTile)
+                makeBlack(x,y)
             } else {
-                makeWhite(selectedTile)
+                makeWhite(x,y)
             }
             updateBoardState()//After flip?
             flipTiles(x, y)
@@ -124,11 +127,10 @@ class OthelloViewModel : ViewModel() {
 
     // Place a piece on the board
     private fun putPiece(x: Int, y: Int, isBlack: Boolean) {
-        val tile = getTile(x, y)
         if (isBlack) {
-            makeBlack(tile)
+            makeBlack(x,y)
         } else {
-            makeWhite(tile)
+            makeWhite(x,y)
         }
     }
 
@@ -389,3 +391,4 @@ class OthelloViewModel : ViewModel() {
     }
 
 }
+
