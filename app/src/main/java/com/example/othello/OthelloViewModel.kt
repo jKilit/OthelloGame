@@ -187,9 +187,30 @@ class OthelloViewModel : ViewModel() {
     }
 
 
-    private fun hasFlippableTilesVertical(x: Int, y: Int): Boolean {
-        // Add your logic to check for flippable tiles vertically
-        return true
+    private fun hasFlippableTilesVertical(x: Int, y: Int): Boolean { //followed the same code as before
+        val currentTile = getTile(x, y)
+
+        var upFlippable = false
+        var upY = y - 1
+        while (upY >= 0 && getTile(x, upY).isWhite != currentTile.isWhite) {
+            if (getTile(x, upY).isEmpty()) {
+                upFlippable = true
+                break
+            }
+            upY--
+        }
+
+        var downFlippable = false
+        var downY = y + 1
+        while (downY < BOARD_SIZE && getTile(x, downY).isWhite != currentTile.isWhite) {
+            if (getTile(x, downY).isEmpty()) {
+                downFlippable = true
+                break
+            }
+            downY++
+        }
+
+        return upFlippable || downFlippable
     }
 
     private fun hasFlippableTilesDiagonal(x: Int, y: Int): Boolean {
