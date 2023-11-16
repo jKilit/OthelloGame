@@ -191,11 +191,57 @@ class OthelloViewModel : ViewModel() {
         }
     }
 
+    //logic based on the chat from the other flip functions
     private fun flipDiagonal(x: Int, y: Int) {
-        if(hasFlippableTilesDiagonal(x,y)){
+        if (hasFlippableTilesDiagonal(x, y)) {
+            val currentTile = getTile(x, y)
 
+            var topLeftX = x - 1
+            var topLeftY = y - 1
+            while (topLeftX >= 0 && topLeftY >= 0 && getTile(topLeftX, topLeftY).isWhite != currentTile.isWhite) {
+                if (getTile(topLeftX, topLeftY).isEmpty()) {
+                    break
+                }
+                flip(topLeftX, topLeftY)
+                topLeftX--
+                topLeftY--
+            }
+
+            var topRightX = x + 1
+            var topRightY = y - 1
+            while (topRightX < BOARD_SIZE && topRightY >= 0 && getTile(topRightX, topRightY).isWhite != currentTile.isWhite) {
+                if (getTile(topRightX, topRightY).isEmpty()) {
+                    break
+                }
+                flip(topLeftX, topLeftY)
+                topRightX++
+                topRightY--
+            }
+
+            var bottomLeftX = x - 1
+            var bottomLeftY = y + 1
+            while (bottomLeftX >= 0 && bottomLeftY < BOARD_SIZE && getTile(bottomLeftX, bottomLeftY).isWhite != currentTile.isWhite) {
+                if (getTile(bottomLeftX, bottomLeftY).isEmpty()) {
+                    break
+                }
+                flip(bottomLeftX, bottomLeftY)
+                bottomLeftX--
+                bottomLeftY++
+            }
+
+            var bottomRightX = x + 1
+            var bottomRightY = y + 1
+            while (bottomRightX < BOARD_SIZE && bottomRightY < BOARD_SIZE && getTile(bottomRightX, bottomRightY).isWhite != currentTile.isWhite) {
+                if (getTile(bottomRightX, bottomRightY).isEmpty()) {
+                    break
+                }
+                flip(bottomRightX, bottomRightY)
+                bottomRightX++
+                bottomRightY++
+            }
         }
     }
+
 
     // Check if there are flippable tiles in any direction
     private fun hasFlippableTiles(x: Int, y: Int): Boolean {
