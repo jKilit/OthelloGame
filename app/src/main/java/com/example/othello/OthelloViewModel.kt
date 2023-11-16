@@ -50,7 +50,7 @@ class OthelloViewModel : ViewModel() {
         putPiece(4, 4, true)
     }
 
-    fun flip(x: Int, y: Int) {
+    fun flip(x: Int, y: Int) { //inside viewmodel now
         val currentNote= getTile(x,y)
         if (currentNote.isBlack) {
             currentNote.isBlack = false
