@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                         mutableStateOf(false)
                     }
                     var topBarTitle by rememberSaveable {
-                        mutableStateOf("Othello Game")
+                        mutableStateOf("Othello Game On Steroids")
                     }
 
                     val navController = rememberNavController()
