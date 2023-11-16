@@ -13,17 +13,6 @@ data class Tile(
         return !isBlack && !isWhite
     }
 }
-
-fun flip(tile: Tile) {
-    if (tile.isBlack) {
-        tile.isBlack = false
-        tile.isWhite = true
-    } else {
-        tile.isBlack = true
-        tile.isWhite = false
-    }
-}
-
 fun makeBlack(tile: Tile) {
     tile.isBlack = true
     tile.isWhite = false
@@ -59,6 +48,17 @@ class OthelloViewModel : ViewModel() {
         putPiece(3, 4, false)
         putPiece(4, 3, false)
         putPiece(4, 4, true)
+    }
+
+    fun flip(x: Int, y: Int) { //inside viewmodel now
+        val currentNote= getTile(x,y)
+        if (currentNote.isBlack) {
+            currentNote.isBlack = false
+            currentNote.isWhite = true
+        } else {
+            currentNote.isBlack = true
+            currentNote.isWhite = false
+        }
     }
 
     // Function to handle a move
@@ -139,16 +139,42 @@ class OthelloViewModel : ViewModel() {
         flipDiagonal(x, y)
     }
 
-    private fun flipHorizontal(x: Int, y: Int) {
-        // Add your logic to flip tiles horizontally
+    private fun flipHorizontal(x: Int, y: Int) { //chat.openai.com/share/ef8d0e59-9fbd-4c5e-817e-877ea2d07cb5
+        if (hasFlippableTilesHorizontal(x, y)) {
+            val currentTile = getTile(x, y)
+
+            // Flip tiles to the left
+            var leftX = x - 1
+            while (leftX >= 0 && getTile(leftX, y).isWhite != currentTile.isWhite) {
+                if (getTile(leftX, y).isEmpty()) {
+                    break
+                }
+                flip(leftX, y)
+                leftX--
+            }
+
+            // Flip tiles to the right
+            var rightX = x + 1
+            while (rightX < BOARD_SIZE && getTile(rightX, y).isWhite != currentTile.isWhite) {
+                if (getTile(rightX,y).isEmpty()) {
+                    break
+                }
+                flip(rightX, y)
+                rightX++
+            }
+        }
     }
 
     private fun flipVertical(x: Int, y: Int) {
-        // Add your logic to flip tiles vertically
+        if(hasFlippableTilesVertical(x,y)){
+
+        }
     }
 
     private fun flipDiagonal(x: Int, y: Int) {
-        // Add your logic to flip tiles diagonally
+        if(hasFlippableTilesDiagonal(x,y)){
+
+        }
     }
 
     // Check if there are flippable tiles in any direction
@@ -187,7 +213,7 @@ class OthelloViewModel : ViewModel() {
     }
 
 
-    private fun hasFlippableTilesVertical(x: Int, y: Int): Boolean { //followed the same code as before
+    private fun hasFlippableTilesVertical(x: Int, y: Int): Boolean { //followed horizontal as template
         val currentTile = getTile(x, y)
 
         var upFlippable = false
