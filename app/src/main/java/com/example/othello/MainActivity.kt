@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
                                     composable(route = Screen.Game.route) {
                                         topBarTitle = "Go back Home"
                                         showBackButton = true
-                                        GameScreen()
+                                        GameScreen(isDarkMode = isDarkMode)
                                     }
                                     composable(route = Screen.GameOver.route) {
                                         topBarTitle = "Game Over"
