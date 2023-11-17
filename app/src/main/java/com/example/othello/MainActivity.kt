@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                         mutableStateOf(false)
                     }
                     var topBarTitle by rememberSaveable {
-                        mutableStateOf("Othello Game On Steroids")
+                        mutableStateOf("Othello Game")
                     }
 
                     val navController = rememberNavController()
@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
                                         StartScreen(navController = navController, isDarkMode)
                                     }
                                     composable(route = Screen.Game.route) {
-                                        topBarTitle = "Go back Home"
+                                        topBarTitle = "Exit Game"
                                         showBackButton = true
                                         GameScreen(isDarkMode = isDarkMode)
                                     }

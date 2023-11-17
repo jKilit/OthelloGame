@@ -31,7 +31,7 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(14.dp)
+            .background(if (isDarkMode) Color.Black else Color.White)
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -40,7 +40,7 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
             modifier = Modifier
                 .weight(1f)
                 .clip(RoundedCornerShape(20.dp))
-                .background(if (isDarkMode) Color.Green else Color.LightGray)
+                .background(if (isDarkMode) Color.DarkGray else Color.LightGray)
                 .padding(6.dp)
         ) {
             LazyVerticalGrid(
@@ -55,18 +55,44 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
 
-        // Displaying scores and current turn
-        val (blackScore, whiteScore) = viewModel.getScores()
-        Text("Black: $blackScore  White: $whiteScore")
+        Spacer(
+            modifier = Modifier
+                .height(16.dp)
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(if (isDarkMode) Color.DarkGray else Color.LightGray)
+                .padding(10.dp)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Displaying scores
+                val (blackScore, whiteScore) = viewModel.getScores()
+                Text(
+                    "Black: $blackScore  White: $whiteScore",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (isDarkMode) Color.White else Color.DarkGray
+                )
 
-        // Displaying current turn
-        val turnText = if (viewModel.isBlackTurn) "Black's Turn" else "White's Turn"
-        Text(turnText, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+                Spacer(modifier = Modifier.height(8.dp))
+
+                val turnText = if (viewModel.isBlackTurn) "Black's Turn" else "White's Turn"
+                Text(
+                    turnText,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (isDarkMode) Color.White else Color.DarkGray
+                )
+            }
+        }
     }
 }
-
 
 
 @Composable
