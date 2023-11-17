@@ -36,9 +36,6 @@ class OthelloViewModel : ViewModel() {
     internal var isBlackTurn = true
         private set
 
-    private val _isDarkMode = mutableStateOf(false)
-    val isDarkMode: State<Boolean> = _isDarkMode
-
     init { //initziering block, koden körs när othello classen skapas
         // Initialize the starting position of Othello
         makeBlack(3, 3)
@@ -584,9 +581,6 @@ class OthelloViewModel : ViewModel() {
     private fun updateBoardState() {
         boardState.clear()
         boardState.addAll(gameBoard.flatten())
-    }
-    fun toggleDarkMode() {
-        _isDarkMode.value = !_isDarkMode.value
     }
     fun getScores(): Pair<Int, Int> {
         var blackScore = 0

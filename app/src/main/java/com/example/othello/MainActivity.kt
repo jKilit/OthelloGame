@@ -57,6 +57,7 @@ class MainActivity : ComponentActivity() {
 
                     val navController = rememberNavController()
 
+                    var isDarkMode by remember { mutableStateOf(false) }
                     Scaffold(
                         topBar = {
                             TopAppBar(
@@ -83,7 +84,7 @@ class MainActivity : ComponentActivity() {
                                     composable(route = Screen.Start.route) {
                                         topBarTitle = ""
                                         showBackButton = false
-                                        StartScreen(navController = navController)
+                                        StartScreen(navController = navController, isDarkMode)
                                     }
                                     composable(route = Screen.Game.route) {
                                         topBarTitle = "Go back Home"
@@ -98,7 +99,9 @@ class MainActivity : ComponentActivity() {
                                     composable(route = Screen.Settings.route) {
                                         topBarTitle = "Settings"
                                         showBackButton = true
-                                        SettingsScreen(navController = navController)
+                                        SettingsScreen(navController = navController,isDarkMode ) {
+                                            isDarkMode = it
+                                        }
                                     }
                                 }
                             }
