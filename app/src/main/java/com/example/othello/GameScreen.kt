@@ -63,7 +63,7 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel()) {
 
         // Displaying current turn
         val turnText = if (viewModel.isBlackTurn) "Black's Turn" else "White's Turn"
-        Text(turnText, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+        Text(turnText, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
     }
 }
 
