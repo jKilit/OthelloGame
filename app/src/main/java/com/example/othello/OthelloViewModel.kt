@@ -154,10 +154,24 @@ class OthelloViewModel : ViewModel() {
                 flip(leftX, y)
                 leftX--
             }
+            while (leftX >= 0 && getTile(leftX, y).isBlack != currentTile.isBlack) {
+                if (getTile(leftX, y).isEmpty()) {
+                    break
+                }
+                flip(leftX, y)
+                leftX--
+            }
 
             // Flip tiles to the right
             var rightX = x + 1
             while (rightX < BOARD_SIZE && getTile(rightX, y).isWhite != currentTile.isWhite) {
+                if (getTile(rightX,y).isEmpty()) {
+                    break
+                }
+                flip(rightX, y)
+                rightX++
+            }
+            while (rightX < BOARD_SIZE && getTile(rightX, y).isBlack != currentTile.isBlack) {
                 if (getTile(rightX,y).isEmpty()) {
                     break
                 }
@@ -180,10 +194,24 @@ class OthelloViewModel : ViewModel() {
                 flip(x, upY)
                 upY--
             }
+            while (upY >= 0 && getTile(x, upY).isBlack != currentTile.isBlack) {
+                if (getTile(x, upY).isEmpty()) {
+                    break
+                }
+                flip(x, upY)
+                upY--
+            }
 
             // Flip tiles down
             var downY = y + 1
             while (downY < BOARD_SIZE && getTile(x, downY).isWhite != currentTile.isWhite) {
+                if (getTile(x,downY).isEmpty()) {
+                    break
+                }
+                flip(x, downY)
+                downY++
+            }
+            while (downY < BOARD_SIZE && getTile(x, downY).isBlack != currentTile.isBlack) {
                 if (getTile(x,downY).isEmpty()) {
                     break
                 }
@@ -208,10 +236,26 @@ class OthelloViewModel : ViewModel() {
                 topLeftX--
                 topLeftY--
             }
+            while (topLeftX >= 0 && topLeftY >= 0 && getTile(topLeftX, topLeftY).isBlack != currentTile.isBlack) {
+                if (getTile(topLeftX, topLeftY).isEmpty()) {
+                    break
+                }
+                flip(topLeftX, topLeftY)
+                topLeftX--
+                topLeftY--
+            }
 
             var topRightX = x + 1
             var topRightY = y - 1
             while (topRightX < BOARD_SIZE && topRightY >= 0 && getTile(topRightX, topRightY).isWhite != currentTile.isWhite) {
+                if (getTile(topRightX, topRightY).isEmpty()) {
+                    break
+                }
+                flip(topLeftX, topLeftY)
+                topRightX++
+                topRightY--
+            }
+            while (topRightX < BOARD_SIZE && topRightY >= 0 && getTile(topRightX, topRightY).isBlack != currentTile.isBlack) {
                 if (getTile(topRightX, topRightY).isEmpty()) {
                     break
                 }
@@ -230,10 +274,26 @@ class OthelloViewModel : ViewModel() {
                 bottomLeftX--
                 bottomLeftY++
             }
+            while (bottomLeftX >= 0 && bottomLeftY < BOARD_SIZE && getTile(bottomLeftX, bottomLeftY).isBlack != currentTile.isBlack) {
+                if (getTile(bottomLeftX, bottomLeftY).isEmpty()) {
+                    break
+                }
+                flip(bottomLeftX, bottomLeftY)
+                bottomLeftX--
+                bottomLeftY++
+            }
 
             var bottomRightX = x + 1
             var bottomRightY = y + 1
             while (bottomRightX < BOARD_SIZE && bottomRightY < BOARD_SIZE && getTile(bottomRightX, bottomRightY).isWhite != currentTile.isWhite) {
+                if (getTile(bottomRightX, bottomRightY).isEmpty()) {
+                    break
+                }
+                flip(bottomRightX, bottomRightY)
+                bottomRightX++
+                bottomRightY++
+            }
+            while (bottomRightX < BOARD_SIZE && bottomRightY < BOARD_SIZE && getTile(bottomRightX, bottomRightY).isBlack != currentTile.isBlack) {
                 if (getTile(bottomRightX, bottomRightY).isEmpty()) {
                     break
                 }
@@ -258,10 +318,27 @@ class OthelloViewModel : ViewModel() {
         // Check to the left
         var leftFlippable = false
         var leftX = x - 1
-        while (leftX >= 0 && getTile(leftX, y).isWhite != currentTile.isWhite) {//checks if colors are different
-            if (getTile(leftX, y).isEmpty()) { //https://chat.openai.com/share/b99130fd-406e-493e-8df0-847ae1bdb512
+        while (leftX >= 0) {
+            val leftTile = getTile(leftX, y)
+            if (leftTile.isWhite == currentTile.isWhite) {
+                break // Stop if we find a tile of the same color
+            } else if (leftTile.isEmpty()) {
+                leftFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
                 leftFlippable = true
-                break
+            }
+            leftX--
+        }
+        while (leftX >= 0) {
+            val leftTile = getTile(leftX, y)
+            if (leftTile.isBlack == currentTile.isBlack) {
+                break // Stop if we find a tile of the same color
+            } else if (leftTile.isEmpty()) {
+                leftFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
+                leftFlippable = true
             }
             leftX--
         }
@@ -269,10 +346,27 @@ class OthelloViewModel : ViewModel() {
         // Check to the right
         var rightFlippable = false
         var rightX = x + 1
-        while (rightX < BOARD_SIZE && getTile(rightX, y).isWhite != currentTile.isWhite) {
-            if (getTile(rightX, y).isEmpty()) {
+        while (rightX < BOARD_SIZE) {
+            val rightTile = getTile(rightX, y)
+            if (rightTile.isWhite == currentTile.isWhite) {
+                break // Stop if we find a tile of the same color
+            } else if (rightTile.isEmpty()) {
+                rightFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
                 rightFlippable = true
-                break
+            }
+            rightX++
+        }
+        while (rightX < BOARD_SIZE) {
+            val rightTile = getTile(rightX, y)
+            if (rightTile.isBlack == currentTile.isBlack) {
+                break // Stop if we find a tile of the same color
+            } else if (rightTile.isEmpty()) {
+                rightFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
+                rightFlippable = true
             }
             rightX++
         }
@@ -281,31 +375,68 @@ class OthelloViewModel : ViewModel() {
     }
 
 
-    private fun hasFlippableTilesVertical(x: Int, y: Int): Boolean { //followed horizontal as template
+
+    private fun hasFlippableTilesVertical(x: Int, y: Int): Boolean {
         val currentTile = getTile(x, y)
 
         var upFlippable = false
         var upY = y - 1
-        while (upY >= 0 && getTile(x, upY).isWhite != currentTile.isWhite) {
-            if (getTile(x, upY).isEmpty()) {
+        while (upY >= 0) {
+            val upTile = getTile(x, upY)
+            if (upTile.isWhite == currentTile.isWhite) {
+                break // Stop if we find a tile of the same color
+            } else if (upTile.isEmpty()) {
+                upFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
                 upFlippable = true
-                break
+            }
+            upY--
+        }
+        while (upY >= 0) {
+            val upTile = getTile(x, upY)
+            if (upTile.isBlack == currentTile.isBlack) {
+                break // Stop if we find a tile of the same color
+            } else if (upTile.isEmpty()) {
+                upFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
+                upFlippable = true
             }
             upY--
         }
 
         var downFlippable = false
         var downY = y + 1
-        while (downY < BOARD_SIZE && getTile(x, downY).isWhite != currentTile.isWhite) {
-            if (getTile(x, downY).isEmpty()) {
+        while (downY < BOARD_SIZE) {
+            val downTile = getTile(x, downY)
+            if (downTile.isWhite == currentTile.isWhite) {
+                break // Stop if we find a tile of the same color
+            } else if (downTile.isEmpty()) {
+                downFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
                 downFlippable = true
-                break
+            }
+            downY++
+        }
+        while (downY < BOARD_SIZE) {
+            val downTile = getTile(x, downY)
+            if (downTile.isBlack == currentTile.isBlack) {
+                break // Stop if we find a tile of the same color
+            } else if (downTile.isEmpty()) {
+                downFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
+                downFlippable = true
             }
             downY++
         }
 
+
         return upFlippable || downFlippable
     }
+
 
 
     //https://chat.openai.com/share/e37a834a-e229-4bd9-a741-2e4818dd9a3f
@@ -315,10 +446,28 @@ class OthelloViewModel : ViewModel() {
         var topLeftFlippable = false
         var topLeftX = x - 1
         var topLeftY = y - 1
-        while (topLeftX >= 0 && topLeftY >= 0 && getTile(topLeftX, topLeftY).isWhite != currentTile.isWhite) {
-            if (getTile(topLeftX, topLeftY).isEmpty()) {
+        while (topLeftX >= 0 && topLeftY >= 0) {
+            val topLeftTile = getTile(topLeftX, topLeftY)
+            if (topLeftTile.isWhite == currentTile.isWhite) {
+                break // Stop if we find a tile of the same color
+            } else if (topLeftTile.isEmpty()) {
+                topLeftFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
                 topLeftFlippable = true
-                break
+            }
+            topLeftX--
+            topLeftY--
+        }
+        while (topLeftX >= 0 && topLeftY >= 0) {
+            val topLeftTile = getTile(topLeftX, topLeftY)
+            if (topLeftTile.isBlack == currentTile.isBlack) {
+                break // Stop if we find a tile of the same color
+            } else if (topLeftTile.isEmpty()) {
+                topLeftFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
+                topLeftFlippable = true
             }
             topLeftX--
             topLeftY--
@@ -327,10 +476,28 @@ class OthelloViewModel : ViewModel() {
         var topRightFlippable = false
         var topRightX = x - 1
         var topRightY = y + 1
-        while (topRightX >= 0 && topRightY < BOARD_SIZE && getTile(topRightX, topRightY).isWhite != currentTile.isWhite) {
-            if (getTile(topRightX, topRightY).isEmpty()) {
+        while (topRightX >= 0 && topRightY < BOARD_SIZE) {
+            val topRightTile = getTile(topRightX, topRightY)
+            if (topRightTile.isWhite == currentTile.isWhite) {
+                break // Stop if we find a tile of the same color
+            } else if (topRightTile.isEmpty()) {
+                topRightFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
                 topRightFlippable = true
-                break
+            }
+            topRightX--
+            topRightY++
+        }
+        while (topRightX >= 0 && topRightY < BOARD_SIZE) {
+            val topRightTile = getTile(topRightX, topRightY)
+            if (topRightTile.isBlack == currentTile.isBlack) {
+                break // Stop if we find a tile of the same color
+            } else if (topRightTile.isEmpty()) {
+                topRightFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
+                topRightFlippable = true
             }
             topRightX--
             topRightY++
@@ -339,10 +506,28 @@ class OthelloViewModel : ViewModel() {
         var bottomLeftFlippable = false
         var bottomLeftX = x + 1
         var bottomLeftY = y - 1
-        while (bottomLeftX < BOARD_SIZE && bottomLeftY >= 0 && getTile(bottomLeftX, bottomLeftY).isWhite != currentTile.isWhite) {
-            if (getTile(bottomLeftX, bottomLeftY).isEmpty()) {
+        while (bottomLeftX < BOARD_SIZE && bottomLeftY >= 0) {
+            val bottomLeftTile = getTile(bottomLeftX, bottomLeftY)
+            if (bottomLeftTile.isWhite == currentTile.isWhite) {
+                break // Stop if we find a tile of the same color
+            } else if (bottomLeftTile.isEmpty()) {
+                bottomLeftFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
                 bottomLeftFlippable = true
-                break
+            }
+            bottomLeftX++
+            bottomLeftY--
+        }
+        while (bottomLeftX < BOARD_SIZE && bottomLeftY >= 0) {
+            val bottomLeftTile = getTile(bottomLeftX, bottomLeftY)
+            if (bottomLeftTile.isBlack == currentTile.isBlack) {
+                break // Stop if we find a tile of the same color
+            } else if (bottomLeftTile.isEmpty()) {
+                bottomLeftFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
+                bottomLeftFlippable = true
             }
             bottomLeftX++
             bottomLeftY--
@@ -351,10 +536,28 @@ class OthelloViewModel : ViewModel() {
         var bottomRightFlippable = false
         var bottomRightX = x + 1
         var bottomRightY = y + 1
-        while (bottomRightX < BOARD_SIZE && bottomRightY < BOARD_SIZE && getTile(bottomRightX, bottomRightY).isWhite != currentTile.isWhite) {
-            if (getTile(bottomRightX, bottomRightY).isEmpty()) {
+        while (bottomRightX < BOARD_SIZE && bottomRightY < BOARD_SIZE) {
+            val bottomRightTile = getTile(bottomRightX, bottomRightY)
+            if (bottomRightTile.isWhite == currentTile.isWhite) {
+                break // Stop if we find a tile of the same color
+            } else if (bottomRightTile.isEmpty()) {
+                bottomRightFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
                 bottomRightFlippable = true
-                break
+            }
+            bottomRightX++
+            bottomRightY++
+        }
+        while (bottomRightX < BOARD_SIZE && bottomRightY < BOARD_SIZE) {
+            val bottomRightTile = getTile(bottomRightX, bottomRightY)
+            if (bottomRightTile.isBlack == currentTile.isBlack) {
+                break // Stop if we find a tile of the same color
+            } else if (bottomRightTile.isEmpty()) {
+                bottomRightFlippable = false
+                break // We found an empty tile, but it's not flippable in this direction
+            } else {
+                bottomRightFlippable = true
             }
             bottomRightX++
             bottomRightY++
@@ -362,6 +565,7 @@ class OthelloViewModel : ViewModel() {
 
         return topLeftFlippable || topRightFlippable || bottomLeftFlippable || bottomRightFlippable
     }
+
 
 
 
