@@ -31,7 +31,8 @@ class OthelloViewModel : ViewModel() {
         addAll(gameBoard.flatten())
     }
 
-    private var isBlackTurn = true
+    internal var isBlackTurn = true
+        private set
 
     init { //initziering block, koden körs när othello classen skapas
         // Initialize the starting position of Othello

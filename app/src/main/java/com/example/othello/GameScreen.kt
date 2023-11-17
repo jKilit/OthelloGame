@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
@@ -30,30 +31,43 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .background(Color.DarkGray),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(14.dp)
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(OthelloViewModel.BOARD_SIZE),
-            modifier = Modifier.fillMaxSize()
+        // Box to separate game board from scores and turn information
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color.DarkGray)
+                .padding(6.dp)
         ) {
-            items(gameBoard) { tile ->
-                TileView(tile = tile, onClick = {
-                    viewModel.makeMove(tile.x, tile.y)
-                })
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(OthelloViewModel.BOARD_SIZE),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(gameBoard) { tile ->
+                    TileView(tile = tile, onClick = {
+                        viewModel.makeMove(tile.x, tile.y)
+                    })
+                }
             }
         }
 
-        // Displaying scores
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Displaying scores and current turn
         val (blackScore, whiteScore) = viewModel.getScores()
         Text("Black: $blackScore, White: $whiteScore")
+
+        // Displaying current turn
+        val turnText = if (viewModel.isBlackTurn) "Black's Turn" else "White's Turn"
+        Text(turnText, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
     }
 }
+
+
 
 @Composable
 fun TileView(tile: Tile, onClick: () -> Unit) {
