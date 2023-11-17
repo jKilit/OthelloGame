@@ -1,6 +1,8 @@
 package com.example.othello
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 
 data class Tile(
@@ -32,6 +34,9 @@ class OthelloViewModel : ViewModel() {
     }
 
     private var isBlackTurn = true
+
+    private val _isDarkMode = mutableStateOf(false)
+    val isDarkMode: State<Boolean> = _isDarkMode
 
     init { //initziering block, koden körs när othello classen skapas
         // Initialize the starting position of Othello
@@ -578,7 +583,9 @@ class OthelloViewModel : ViewModel() {
         boardState.clear()
         boardState.addAll(gameBoard.flatten())
     }
-
+    fun toggleDarkMode() {
+        _isDarkMode.value = !_isDarkMode.value
+    }
     fun getScores(): Pair<Int, Int> {
         var blackScore = 0
         var whiteScore = 0

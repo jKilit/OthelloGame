@@ -23,7 +23,7 @@ fun SettingsScreen(navController: NavController) {
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier
@@ -44,7 +44,7 @@ fun SettingsScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Dark Mode",
+                    text = if (isDarkMode) "Light Mode" else "Dark Mode",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.weight(1f)
                 )
@@ -57,8 +57,6 @@ fun SettingsScreen(navController: NavController) {
                     }
                 )
             }
-
-            // more settings......
 
             Spacer(modifier = Modifier.weight(1f))
 
