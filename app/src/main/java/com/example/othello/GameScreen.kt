@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun GameScreen(viewModel: OthelloViewModel = viewModel()) {
+fun GameScreen(viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
     val gameBoard = viewModel.boardState
 
     Column(
@@ -40,7 +40,7 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel()) {
             modifier = Modifier
                 .weight(1f)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.DarkGray)
+                .background(if (isDarkMode) Color.Green else Color.LightGray)
                 .padding(6.dp)
         ) {
             LazyVerticalGrid(

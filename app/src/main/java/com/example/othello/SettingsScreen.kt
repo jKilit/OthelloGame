@@ -18,8 +18,7 @@ import com.example.othello.R
 import com.example.othello.Screen
 
 @Composable
-fun SettingsScreen(navController: NavController) {
-    var isDarkMode by remember { mutableStateOf(false) }
+fun SettingsScreen(navController: NavController, isDarkMode: Boolean , setDarkMode: (Boolean) -> Unit) {
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -32,7 +31,9 @@ fun SettingsScreen(navController: NavController) {
         ) {
             Text(
                 text = "Settings",
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = if (isDarkMode) Color.White else Color.Black
+                ),
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
@@ -45,15 +46,16 @@ fun SettingsScreen(navController: NavController) {
             ) {
                 Text(
                     text = if (isDarkMode) "Light Mode" else "Dark Mode",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        color = if (isDarkMode) Color.White else Color.Black
+                    ),
                     modifier = Modifier.weight(1f)
                 )
 
                 Switch(
                     checked = isDarkMode,
                     onCheckedChange = { isChecked ->
-                        isDarkMode = isChecked
-                        // Apply your dark mode logic here
+                        setDarkMode(isChecked)
                     }
                 )
             }
