@@ -251,7 +251,7 @@ class OthelloViewModel : ViewModel() {
                 if (getTile(topRightX, topRightY).isEmpty()) {
                     break
                 }
-                flip(topLeftX, topLeftY)
+                flip(topRightX, topRightY)
                 topRightX++
                 topRightY--
             }
@@ -259,7 +259,7 @@ class OthelloViewModel : ViewModel() {
                 if (getTile(topRightX, topRightY).isEmpty()) {
                     break
                 }
-                flip(topLeftX, topLeftY)
+                flip(topRightX, topRightY)
                 topRightX++
                 topRightY--
             }
@@ -303,6 +303,7 @@ class OthelloViewModel : ViewModel() {
             }
         }
     }
+
 
 
     // Check if there are flippable tiles in any direction
