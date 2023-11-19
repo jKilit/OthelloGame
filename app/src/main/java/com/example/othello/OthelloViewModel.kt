@@ -67,6 +67,16 @@ class OthelloViewModel : ViewModel() {
         current.isWhite = true
     }
 
+    fun isGameOver(): Boolean {
+        for (tile in boardState) {
+            if (tile.isEmpty()) {
+                return false // Game is not over, there is an empty tile
+            }
+        }
+        return true // All tiles are filled, game is over
+    }
+
+
     // Function to handle a move
    fun makeMove(x: Int, y: Int) {//göra specifika movet
         val selectedTile = getTile(x, y)
