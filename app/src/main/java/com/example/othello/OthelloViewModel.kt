@@ -83,13 +83,22 @@ class OthelloViewModel : ViewModel() {
 
         if (isValidMove(selectedTile)) {
             if (isBlackTurn) {
-                makeBlack(x,y)
+                makeBlack(x, y)
             } else {
-                makeWhite(x,y)
+                makeWhite(x, y)
             }
             updateBoardState()//After flip?
             flipTiles(x, y)
             isBlackTurn = !isBlackTurn  // Switch turn after a valid move
+
+            // Check if the game is over after each move
+            if (isGameOver()) {
+                // Game is over, calculate and display the winner
+                val (blackScore, whiteScore) = getScores()
+                val winner =
+                    if (blackScore > whiteScore) "Black" else if (whiteScore > blackScore) "White" else "It's a tie"
+                            //gameOverScreen()
+            }
         }
     }
 
