@@ -43,5 +43,10 @@ class LobbyViewModel : ViewModel() {
 
 
     }
+    fun leaveLobby(){
+        viewModelScope.launch {
+            SupabaseService.leaveLobby()
+        }
+    }
 
 }
