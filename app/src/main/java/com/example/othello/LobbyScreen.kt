@@ -21,6 +21,8 @@ import io.garrit.android.multiplayer.Game
 import io.garrit.android.multiplayer.Player
 import io.garrit.android.multiplayer.ServerState
 import io.garrit.android.multiplayer.SupabaseService
+import io.garrit.android.multiplayer.SupabaseService.games
+import io.garrit.android.multiplayer.SupabaseService.users
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
@@ -54,6 +56,9 @@ fun LobbyScreen(navController: NavController) {
             ) {
                 Text(text = "Join Lobby")
             }
+            Button(onClick = { viewModel.leaveLobby() }) {
+                Text("Leave Lobby")
+            }
 
             Button(
                 onClick = {
@@ -66,25 +71,33 @@ fun LobbyScreen(navController: NavController) {
             }
             when (serverState.value) {
                 ServerState.NOT_CONNECTED -> {
-                    // Fix not connected state
+                    Text("Not Connected")
                 }
-
                 ServerState.LOADING_LOBBY -> {
-                    // Fix loading lobby state
+                    CircularProgressIndicator()
                 }
-
                 ServerState.LOBBY -> {
-                    // LobbyContent(/*users.value, games.value, viewModel*/)
+                    LobbyContent(users, games, viewModel)
                 }
-
                 ServerState.LOADING_GAME -> {
-                    // Fix loading game state
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator()
+                        Text("Loading Game...")
+                    }
                 }
-
                 ServerState.GAME -> {
-                    // Fix game state
+                    LaunchedEffect(key1 = Unit) {
+                        navController.navigate(Screen.Game.route) {
+                            popUpTo(Screen.Lobby.route) { inclusive = true }
+                        }
+                    }
                 }
             }
+
         }
     }
 }

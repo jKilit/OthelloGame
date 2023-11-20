@@ -22,7 +22,6 @@ class LobbyViewModel : ViewModel() {
     val events = eventChannel.receiveAsFlow()
 
 
-
     fun joinGame(game: Game) {
         viewModelScope.launch {
             eventChannel.send(Event.JoinGame(game))
@@ -33,6 +32,17 @@ class LobbyViewModel : ViewModel() {
             SupabaseService.invite(opponent)
         }
     }
+    fun acceptGameInvitation(game: Game) {
+        viewModelScope.launch {
+            SupabaseService.acceptInvite(game)
+        }
+    }
+    fun declineGameInvitation(game: Game) {
+        viewModelScope.launch {
+            SupabaseService.declineInvite(game)
+        }
+    }
+
     fun joinLobby(playerName: String) {
         viewModelScope.launch {
             if(playerName.isNotBlank()) {
@@ -40,8 +50,6 @@ class LobbyViewModel : ViewModel() {
                 SupabaseService.joinLobby(player)
             }
         }
-
-
     }
     fun leaveLobby(){
         viewModelScope.launch {
