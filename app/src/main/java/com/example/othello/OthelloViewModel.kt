@@ -248,91 +248,65 @@ class OthelloViewModel : ViewModel() {
         if (hasFlippableTilesDiagonal(x, y)) {
             val currentTile = getTile(x, y)
 
-            var topLeftX = x - 1
-            var topLeftY = y - 1
-            while (topLeftX >= 0 && topLeftY >= 0 && getTile(topLeftX, topLeftY).isWhite != currentTile.isWhite) {
-                if (getTile(topLeftX, topLeftY).isEmpty()) {
-                    break
-                }
-                flip(topLeftX, topLeftY)
-                topLeftX--
-                topLeftY--
-            }
-            while (topLeftX >= 0 && topLeftY >= 0 && getTile(topLeftX, topLeftY).isBlack != currentTile.isBlack) {
-                if (getTile(topLeftX, topLeftY).isEmpty()) {
-                    break
-                }
-                flip(topLeftX, topLeftY)
-                topLeftX--
-                topLeftY--
+            // Check top-left direction
+            if (hasFlippableTilesDiagonalDirection(x, y, -1, -1)) {
+                flipDirection(x, y, -1, -1)
             }
 
-            var topRightX = x + 1
-            var topRightY = y - 1
-            while (topRightX < BOARD_SIZE && topRightY >= 0 && getTile(topRightX, topRightY).isWhite != currentTile.isWhite) {
-                if (getTile(topRightX, topRightY).isEmpty()) {
-                    break
-                }
-                flip(topRightX, topRightY)
-                topRightX++
-                topRightY--
-            }
-            while (topRightX < BOARD_SIZE && topRightY >= 0 && getTile(topRightX, topRightY).isBlack != currentTile.isBlack) {
-                if (getTile(topRightX, topRightY).isEmpty()) {
-                    break
-                }
-                flip(topRightX, topRightY)
-                topRightX++
-                topRightY--
+            // Check top-right direction
+            if (hasFlippableTilesDiagonalDirection(x, y, 1, -1)) {
+                flipDirection(x, y, 1, -1)
             }
 
-            var bottomLeftX = x - 1
-            var bottomLeftY = y + 1
-            while (bottomLeftX >= 0 && bottomLeftY < BOARD_SIZE && getTile(bottomLeftX, bottomLeftY).isWhite != currentTile.isWhite) {
-                if (getTile(bottomLeftX, bottomLeftY).isEmpty()) {
-                    break
-                }
-                flip(bottomLeftX, bottomLeftY)
-                bottomLeftX--
-                bottomLeftY++
-            }
-            while (bottomLeftX >= 0 && bottomLeftY < BOARD_SIZE && getTile(bottomLeftX, bottomLeftY).isBlack != currentTile.isBlack) {
-                if (getTile(bottomLeftX, bottomLeftY).isEmpty()) {
-                    break
-                }
-                flip(bottomLeftX, bottomLeftY)
-                bottomLeftX--
-                bottomLeftY++
+            // Check bottom-left direction
+            if (hasFlippableTilesDiagonalDirection(x, y, -1, 1)) {
+                flipDirection(x, y, -1, 1)
             }
 
-            var bottomRightX = x + 1
-            var bottomRightY = y + 1
-            while (bottomRightX < BOARD_SIZE && bottomRightY < BOARD_SIZE && getTile(bottomRightX, bottomRightY).isWhite != currentTile.isWhite) {
-                if (getTile(bottomRightX, bottomRightY).isEmpty()) {
-                    break
-                }
-                flip(bottomRightX, bottomRightY)
-                bottomRightX++
-                bottomRightY++
-            }
-            while (bottomRightX < BOARD_SIZE && bottomRightY < BOARD_SIZE && getTile(bottomRightX, bottomRightY).isBlack != currentTile.isBlack) {
-                if (getTile(bottomRightX, bottomRightY).isEmpty()) {
-                    break
-                }
-                flip(bottomRightX, bottomRightY)
-                bottomRightX++
-                bottomRightY++
+            // Check bottom-right direction
+            if (hasFlippableTilesDiagonalDirection(x, y, 1, 1)) {
+                flipDirection(x, y, 1, 1)
             }
         }
     }
 
+    private fun hasFlippableTilesDiagonalDirection(startX: Int, startY: Int, deltaX: Int, deltaY: Int): Boolean {
+        val currentTile = getTile(startX, startY)
+
+        var x = startX + deltaX
+        var y = startY + deltaY
+
+        while (x in 0 until BOARD_SIZE && y in 0 until BOARD_SIZE) {
+            val currentDirectionTile = getTile(x, y)
+
+            if (currentDirectionTile.isEmpty()) {
+                return false // Empty tile, invalid move
+            } else if ((isBlackTurn && currentDirectionTile.isBlack) || (!isBlackTurn && currentDirectionTile.isWhite)) {
+                return true // Found a valid sequence to flip
+            }
+
+            x += deltaX
+            y += deltaY
+        }
+
+        return false
+    }
 
 
-    // Check if there are flippable tiles in any direction
-    private fun hasFlippableTiles(x: Int, y: Int): Boolean {
-        return hasFlippableTilesHorizontal(x, y) ||
-                hasFlippableTilesVertical(x, y) ||
-                hasFlippableTilesDiagonal(x, y)
+    private fun flipDirection(startX: Int, startY: Int, deltaX: Int, deltaY: Int) { //https://chat.openai.com/share/23507c7b-ba03-40d8-841c-504827580221
+        var x = startX + deltaX
+        var y = startY + deltaY
+        while (x in 0 until BOARD_SIZE && y in 0 until BOARD_SIZE) {
+            val currentTile = getTile(x, y)
+
+            if (currentTile.isEmpty() || (isBlackTurn && currentTile.isBlack) || (!isBlackTurn && currentTile.isWhite)) {
+                break // Empty tile or tile of the same color, stop flipping
+            }
+
+            flip(x, y)
+            x += deltaX
+            y += deltaY
+        }
     }
 
     private fun hasFlippableTilesHorizontal(x: Int, y: Int): Boolean {
