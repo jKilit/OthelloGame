@@ -27,6 +27,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun LobbyScreen(navController: NavController) {
     val serverState = SupabaseService.serverState.collectAsState()
     var playerName by remember { mutableStateOf("") }
+    val viewModel: LobbyViewModel = viewModel()
     //val users = SupabaseService.users.collectAsState() //PÅ DETTA SÄTT?
 
     Surface(
@@ -46,6 +47,13 @@ fun LobbyScreen(navController: NavController) {
                 onValueChange = { playerName = it },
                 label = { Text("Enter your name") }
             )
+            Button(
+                onClick = {
+                    viewModel.joinLobby(playerName)
+                }
+            ) {
+                Text(text = "Join Lobby")
+            }
 
             Button(
                 onClick = {
