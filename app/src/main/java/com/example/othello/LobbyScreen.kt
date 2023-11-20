@@ -6,6 +6,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +26,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun LobbyScreen(navController: NavController) {
     val serverState = SupabaseService.serverState.collectAsState()
+    var playerName by remember { mutableStateOf("") }
     //val users = SupabaseService.users.collectAsState() //PÅ DETTA SÄTT?
 
     Surface(
@@ -36,6 +41,12 @@ fun LobbyScreen(navController: NavController) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            TextField(
+                value = playerName,
+                onValueChange = { playerName = it },
+                label = { Text("Enter your name") }
+            )
+
             Button(
                 onClick = {
                     navController.navigate(Screen.Game.route) // Call the callback to navigate to GameScreen
