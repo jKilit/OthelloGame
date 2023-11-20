@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class LobbyViewModel : ViewModel() {
 
 
-    //BARA BÖRJAN, en mall!
+    //BARA BÖRJAN, en mall! h
     sealed class Event {
         data class StartGame(val opponent: String, val difficulty: String) : Event()
         data class JoinGame(val game: Game) : Event()
@@ -28,6 +28,11 @@ class LobbyViewModel : ViewModel() {
             eventChannel.send(Event.JoinGame(game))
         }
     }
+    fun sendGameInvitation(opponent: Player) {
+        viewModelScope.launch {
+            SupabaseService.invite(opponent)
+        }
+    }
     fun joinLobby(playerName: String) {
         viewModelScope.launch {
             if(playerName.isNotBlank()) {
@@ -35,6 +40,8 @@ class LobbyViewModel : ViewModel() {
                 SupabaseService.joinLobby(player)
             }
         }
+
+
     }
 
 }

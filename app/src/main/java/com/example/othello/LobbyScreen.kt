@@ -92,7 +92,8 @@ fun LobbyScreen(navController: NavController) {
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun LobbyContent(
-   // users: List<Player>, vänta med denna
+    users: List<Player>,
+    games: List<Game>,
     viewModel: LobbyViewModel
 ) {
     Column(
@@ -102,14 +103,20 @@ fun LobbyContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Display list of users in the lobby
-       /* Text("Users in the Lobby:") Vänta med denna
+        Text("Users in the Lobby:")
         users.forEach { user ->
-            Text(user.name)
-        } */
+            Text(user.name, modifier = Modifier.clickable {
+                viewModel.sendGameInvitation(user)
+            })
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
+        Text("Available Games:")
+        games.forEach { game ->
+            Text("${game.player1.name} vs ${game.player2.name}", modifier = Modifier.clickable {
+                viewModel.joinGame(game)
+            })
+        }
     }
 }
