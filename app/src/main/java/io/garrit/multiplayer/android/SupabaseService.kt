@@ -189,7 +189,7 @@ object SupabaseService {
         }
     }
 
-    private suspend fun leaveLobby() {
+    suspend fun leaveLobby() {
         _lobbyJobs.forEach { it.cancel() }
         _lobbyJobs.clear()
         _lobby?.untrack()
