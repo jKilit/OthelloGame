@@ -57,9 +57,9 @@ fun StartScreen(navController: NavController, isDarkMode: Boolean) {
             )
 
             Button(onClick = {
-                navController.navigate(Screen.Game.route)
+                navController.navigate(Screen.Lobby.route)
             }) {
-                Text("Start Game")
+                Text("Go to Lobby")
             }
 
             Button(onClick = {

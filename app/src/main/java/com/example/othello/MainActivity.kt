@@ -103,6 +103,11 @@ class MainActivity : ComponentActivity() {
                                             isDarkMode = it
                                         }
                                     }
+                                    composable(route = Screen.Lobby.route) {
+                                        topBarTitle = "Back to Start screen"
+                                        showBackButton = true
+                                        LobbyScreen(navController = navController)
+                                    }
                                 }
                             }
                         }
