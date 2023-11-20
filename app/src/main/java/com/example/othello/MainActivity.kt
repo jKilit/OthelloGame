@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity() {
                                         GameOverScreen()
                                     }
                                     composable(route = Screen.Settings.route) {
-                                        topBarTitle = "Settings"
+                                        topBarTitle = "Back to Home"
                                         showBackButton = true
                                         SettingsScreen(navController = navController,isDarkMode ) {
                                             isDarkMode = it

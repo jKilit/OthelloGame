@@ -45,7 +45,7 @@ fun SettingsScreen(navController: NavController, isDarkMode: Boolean , setDarkMo
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = if (isDarkMode) "Light Mode" else "Dark Mode",
+                    text = if (isDarkMode) "Change to Light Mode" else "Change to Dark Mode",
                     style = MaterialTheme.typography.titleLarge.copy(
                         color = if (isDarkMode) Color.White else Color.Black
                     ),
