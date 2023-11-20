@@ -163,84 +163,76 @@ class OthelloViewModel : ViewModel() {
         flipDiagonal(x, y)
     }
 
-    private fun flipHorizontal(x: Int, y: Int) { //chat.openai.com/share/ef8d0e59-9fbd-4c5e-817e-877ea2d07cb5
+    private fun flipHorizontal(x: Int, y: Int) {
         if (hasFlippableTilesHorizontal(x, y)) {
             val currentTile = getTile(x, y)
 
             // Flip tiles to the left
-            var leftX = x - 1
-            while (leftX >= 0 && getTile(leftX, y).isWhite != currentTile.isWhite) {
-                if (getTile(leftX, y).isEmpty()) {
-                    break
-                }
-                flip(leftX, y)
-                leftX--
-            }
-            while (leftX >= 0 && getTile(leftX, y).isBlack != currentTile.isBlack) {
-                if (getTile(leftX, y).isEmpty()) {
-                    break
-                }
-                flip(leftX, y)
-                leftX--
+            if (hasFlippableTilesHorizontalDirection(x, y, -1)) {
+                flipDirection(x, y, -1, 0)
             }
 
             // Flip tiles to the right
-            var rightX = x + 1
-            while (rightX < BOARD_SIZE && getTile(rightX, y).isWhite != currentTile.isWhite) {
-                if (getTile(rightX,y).isEmpty()) {
-                    break
-                }
-                flip(rightX, y)
-                rightX++
-            }
-            while (rightX < BOARD_SIZE && getTile(rightX, y).isBlack != currentTile.isBlack) {
-                if (getTile(rightX,y).isEmpty()) {
-                    break
-                }
-                flip(rightX, y)
-                rightX++
+            if (hasFlippableTilesHorizontalDirection(x, y, 1)) {
+                flipDirection(x, y, 1, 0)
             }
         }
     }
 
     private fun flipVertical(x: Int, y: Int) {
-        if(hasFlippableTilesVertical(x,y)){
+        if (hasFlippableTilesVertical(x, y)) {
             val currentTile = getTile(x, y)
 
             // Flip tiles up
-            var upY = y - 1
-            while (upY >= 0 && getTile(x, upY).isWhite != currentTile.isWhite) {
-                if (getTile(x, upY).isEmpty()) {
-                    break
-                }
-                flip(x, upY)
-                upY--
-            }
-            while (upY >= 0 && getTile(x, upY).isBlack != currentTile.isBlack) {
-                if (getTile(x, upY).isEmpty()) {
-                    break
-                }
-                flip(x, upY)
-                upY--
+            if (hasFlippableTilesVerticalDirection(x, y, -1)) {
+                flipDirection(x, y, 0, -1)
             }
 
             // Flip tiles down
-            var downY = y + 1
-            while (downY < BOARD_SIZE && getTile(x, downY).isWhite != currentTile.isWhite) {
-                if (getTile(x,downY).isEmpty()) {
-                    break
-                }
-                flip(x, downY)
-                downY++
-            }
-            while (downY < BOARD_SIZE && getTile(x, downY).isBlack != currentTile.isBlack) {
-                if (getTile(x,downY).isEmpty()) {
-                    break
-                }
-                flip(x, downY)
-                downY++
+            if (hasFlippableTilesVerticalDirection(x, y, 1)) {
+                flipDirection(x, y, 0, 1)
             }
         }
+    }
+
+    private fun hasFlippableTilesHorizontalDirection(startX: Int, startY: Int, deltaX: Int): Boolean { //https://chat.openai.com/share/23507c7b-ba03-40d8-841c-504827580221
+        val currentTile = getTile(startX, startY)
+
+        var x = startX + deltaX
+
+        while (x in 0 until BOARD_SIZE) {
+            val currentDirectionTile = getTile(x, startY)
+
+            if (currentDirectionTile.isEmpty()) {
+                return false // Empty tile, invalid move
+            } else if ((isBlackTurn && currentDirectionTile.isBlack) || (!isBlackTurn && currentDirectionTile.isWhite)) {
+                return true // Found a valid sequence to flip
+            }
+
+            x += deltaX
+        }
+
+        return false
+    }
+
+    private fun hasFlippableTilesVerticalDirection(startX: Int, startY: Int, deltaY: Int): Boolean { //https://chat.openai.com/share/23507c7b-ba03-40d8-841c-504827580221
+        val currentTile = getTile(startX, startY)
+
+        var y = startY + deltaY
+
+        while (y in 0 until BOARD_SIZE) {
+            val currentDirectionTile = getTile(startX, y)
+
+            if (currentDirectionTile.isEmpty()) {
+                return false // Empty tile, invalid move
+            } else if ((isBlackTurn && currentDirectionTile.isBlack) || (!isBlackTurn && currentDirectionTile.isWhite)) {
+                return true // Found a valid sequence to flip
+            }
+
+            y += deltaY
+        }
+
+        return false
     }
 
     //logic based on the chat from the other flip functions

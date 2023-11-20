@@ -32,6 +32,7 @@ fun LobbyScreen(navController: NavController) {
     val viewModel: LobbyViewModel = viewModel()
     //val users = SupabaseService.users.collectAsState() //PÅ DETTA SÄTT?
 
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
