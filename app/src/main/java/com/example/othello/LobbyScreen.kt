@@ -12,9 +12,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import io.garrit.android.multiplayer.Game
@@ -26,7 +29,7 @@ import io.garrit.android.multiplayer.SupabaseService.users
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun LobbyScreen(navController: NavController) {
+fun LobbyScreen(navController: NavController, isDarkMode: Boolean) {
     val serverState = SupabaseService.serverState.collectAsState()
     var playerName by remember { mutableStateOf("") }
     val viewModel: LobbyViewModel = viewModel()
@@ -35,7 +38,7 @@ fun LobbyScreen(navController: NavController) {
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier
@@ -72,7 +75,11 @@ fun LobbyScreen(navController: NavController) {
             }
             when (serverState.value) {
                 ServerState.NOT_CONNECTED -> {
-                    Text("Not Connected")
+                    Text("Not Connected",
+                        style = TextStyle(fontSize = 16.sp,color = if (isDarkMode) Color.White else Color.Black
+
+                        )
+                    )
                 }
                 ServerState.LOADING_LOBBY -> {
                     CircularProgressIndicator()
