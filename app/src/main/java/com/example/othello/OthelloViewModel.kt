@@ -24,6 +24,7 @@ class OthelloViewModel : ViewModel() {
 
     private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { x -> //2d lista för logik
         List(BOARD_SIZE) { y ->
+            println("$x, $y")
             Tile(x, y, isBlack = false, isWhite = false)
         }
     }
@@ -68,12 +69,16 @@ class OthelloViewModel : ViewModel() {
     }
 
     fun isGameOver(): Boolean {
-        for (tile in boardState) {
-            if (tile.isEmpty()) {
-                return false // Game is not over, there is an empty tile
+        // Check if there are any valid moves for the current player
+        for (i in 0 until BOARD_SIZE) {
+            for (j in 0 until BOARD_SIZE) {
+                val tile = getTile(i, j)
+                if (isValidMove(tile)) {
+                    return false // There is at least one valid move, game is not over
+                }
             }
         }
-        return true // All tiles are filled, game is over
+        return true // No valid moves left, game is over
     }
 
 
@@ -97,7 +102,7 @@ class OthelloViewModel : ViewModel() {
                 val (blackScore, whiteScore) = getScores()
                 val winner =
                     if (blackScore > whiteScore) "Black" else if (whiteScore > blackScore) "White" else "It's a tie"
-                            //gameOverScreen()
+                        //    gameOverScreen()
             }
         }
     }
@@ -112,10 +117,15 @@ class OthelloViewModel : ViewModel() {
             for (j in -1..1) {
                 if (i == 0 && j == 0) continue // Skip the current tile
 
-                val adjacentTile = getTile(tile.x + i, tile.y + j)
+                val newX = tile.x + i
+                val newY = tile.y + j
 
-                if (isValidDirection(tile, adjacentTile, i, j)) {
-                    return true
+                if (newX in 0 until BOARD_SIZE && newY in 0 until BOARD_SIZE) {
+                    val adjacentTile = getTile(newX, newY)
+
+                    if (isValidDirection(tile, adjacentTile, i, j)) {
+                        return true
+                    }
                 }
             }
         }
