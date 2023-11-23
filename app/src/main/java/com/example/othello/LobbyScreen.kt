@@ -1,47 +1,42 @@
-package com.example.othello
-
-import androidx.compose.foundation.clickable
+import android.annotation.SuppressLint
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.othello.LobbyViewModel
+import com.example.othello.Screen
 import io.garrit.android.multiplayer.Game
 import io.garrit.android.multiplayer.Player
 import io.garrit.android.multiplayer.ServerState
 import io.garrit.android.multiplayer.SupabaseService
-import io.garrit.android.multiplayer.SupabaseService.games
-import io.garrit.android.multiplayer.SupabaseService.users
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import io.garrit.android.multiplayer.SupabaseService.serverState
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun LobbyScreen(navController: NavController, isDarkMode: Boolean) {
-    val serverState = SupabaseService.serverState.collectAsState()
-    val viewModel: LobbyViewModel = viewModel()
-    //val users = SupabaseService.users.collectAsState() //PÅ DETTA SÄTT?
-
-
+fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkMode: Boolean) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
@@ -50,99 +45,217 @@ fun LobbyScreen(navController: NavController, isDarkMode: Boolean) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Text(
-                text = "LOBBY",
+                text = "OTHELLO LOBBY",
                 style = TextStyle(
                     fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 60.sp,
-                    color = Color(0xFF42A5F5),
+                    fontSize = 36.sp,
+                    color = Color.Black
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
             )
+            Spacer(modifier = Modifier.height(5.dp))
 
-            Spacer(modifier = Modifier.height(25.dp))
+            Text(
+                text = "Players Online",
+                style=TextStyle(
+                    fontSize = 30.sp,
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+
+            LazyColumn(
+                modifier = Modifier
+                    .border(width = 6.dp, color = Color.LightGray, shape = RoundedCornerShape(10.dp))
+                    .width(280.dp)
+                    .height(140.dp)
+            ) {
+                items(SupabaseService.users) { player ->
+                    onlinePlayers(player, viewModel)
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "Your Challenges",
+                style=TextStyle(
+                    fontSize = 30.sp,
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier
+                    .border(width = 6.dp, color = Color.LightGray, shape = RoundedCornerShape(10.dp))
+                    .width(280.dp)
+                    .height(140.dp)
+            ) {
+                items(SupabaseService.games) { game ->
+                    challenges(navController, game, viewModel)
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
 
             Button(
-                onClick = {
-                    navController.navigate(Screen.Game.route) // Call the callback to navigate to GameScreen
-                },
-                modifier = Modifier
-                    .padding(16.dp)
+                onClick = { navController.navigate(Screen.Game.route) },
+                modifier = Modifier.padding(16.dp)
             ) {
                 Text(text = "Start Game")
             }
-            when (serverState.value) {
-                ServerState.NOT_CONNECTED -> {
-                    Text("Not Connected",
-                        style = TextStyle(fontSize = 16.sp,color = if (isDarkMode) Color.White else Color.Black
 
-                        )
-                    )
-                }
-                ServerState.LOADING_LOBBY -> {
+            when (serverState.value) {
+                ServerState.NOT_CONNECTED -> Text("Not Connected")
+                ServerState.LOADING_LOBBY -> CircularProgressIndicator()
+                ServerState.LOBBY -> Text("In the lobby...")
+                ServerState.LOADING_GAME -> Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     CircularProgressIndicator()
+                    Text("Loading Game...")
                 }
-                ServerState.LOBBY -> {
-                    LobbyContent(users, games, viewModel)
-                }
-                ServerState.LOADING_GAME -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                        Text("Loading Game...")
-                    }
-                }
-                ServerState.GAME -> {
-                    LaunchedEffect(key1 = Unit) {
-                        navController.navigate(Screen.Game.route) {
-                            popUpTo(Screen.Lobby.route) { inclusive = true }
-                        }
+                ServerState.GAME -> LaunchedEffect(key1 = Unit) {
+                    navController.navigate(Screen.Game.route) {
+                        popUpTo(Screen.Lobby.route) { inclusive = true }
                     }
                 }
             }
-
         }
     }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun LobbyContent(
-    users: List<Player>,
-    games: List<Game>,
-    viewModel: LobbyViewModel
-) {
-    Column(
+fun onlinePlayers(player: Player, viewModel: LobbyViewModel) {
+    Row(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth()
+            .padding(start = 20.dp, top = 20.dp,)
     ) {
-        Text("Users in the Lobby:")
-        users.forEach { user ->
-            Text(user.name, modifier = Modifier.clickable {
-                viewModel.sendGameInvitation(user)
-            })
-        }
+        Text(
+            text = player.name,
+            modifier = Modifier
+                .width(150.dp)
+                .padding(end = 10.dp)
+        )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text("Available Games:")
-        games.forEach { game ->
-            Text("${game.player1.name} vs ${game.player2.name}", modifier = Modifier.clickable {
-                viewModel.joinGame(game)
-            })
+        Button(
+            onClick = {
+                viewModel.sendGameInvitation(player)
+            },
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFD9D9D9)
+            ),
+            contentPadding = PaddingValues(0.dp),
+            modifier = Modifier
+                .width(100.dp)
+                .height(25.dp)
+                .padding(start = 20.dp)
+        ) {
+            Text(
+                "Challenge",
+                color = Color.Black,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
+
+@SuppressLint("StateFlowValueCalledInComposition")
+@Composable
+fun challenges(navController: NavController, player: Game, viewModel: LobbyViewModel) {
+
+    Column() {
+        Text(
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                ) {
+                    append(player.player1.name)
+                }
+                append("\n") //break
+
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                ) {
+                    append("has challenged you")
+                }
+            },
+            modifier = Modifier
+                .padding(start = 20.dp, top = 20.dp)
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier
+                .padding(start = 20.dp)
+        ) {
+            Button(
+                onClick = {
+                    viewModel.acceptGameInvitation(player)
+                    navController.navigate(Screen.Game.route)
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.DarkGray
+                ),
+                modifier = Modifier
+                    .width(60.dp)
+                    .height(25.dp)
+            ) {
+                Text(
+                    text = "Accept Game",
+                    textAlign = TextAlign.Center
+                )
+            }
+
+
+            Button(
+                onClick = {
+                    viewModel.declineGameInvitation(player)
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.DarkGray
+                ),
+                modifier = Modifier
+                    .width(60.dp)
+                    .height(25.dp)
+            ) {
+                Text(
+                    text = "Decline Game",
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
