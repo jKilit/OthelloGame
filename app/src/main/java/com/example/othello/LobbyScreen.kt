@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,6 +28,12 @@ import io.garrit.android.multiplayer.SupabaseService
 import io.garrit.android.multiplayer.SupabaseService.games
 import io.garrit.android.multiplayer.SupabaseService.users
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+
+
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun LobbyScreen(navController: NavController, isDarkMode: Boolean) {
@@ -47,6 +54,20 @@ fun LobbyScreen(navController: NavController, isDarkMode: Boolean) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Text(
+                text = "LOBBY",
+                style = TextStyle(
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 60.sp,
+                    color = Color(0xFF42A5F5),
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+            )
+
+            Spacer(modifier = Modifier.height(25.dp))
 
             Button(
                 onClick = {
