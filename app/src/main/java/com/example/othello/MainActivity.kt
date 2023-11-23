@@ -4,6 +4,7 @@ import com.example.othello.StartScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -61,7 +63,14 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         topBar = {
                             TopAppBar(
-                                title = { Text(text = topBarTitle) },
+                                title = {
+                                    Text(
+                                    text = topBarTitle,
+                                    color = if (isDarkMode) Color.White else Color.Black
+                                ) },
+                                colors = TopAppBarDefaults.topAppBarColors(
+                                    containerColor = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
+                                ),
                                 navigationIcon = {
                                     if (showBackButton) {
                                         IconButton(onClick = { navController.navigateUp() }) {
@@ -70,6 +79,8 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             )
+
+
                         },
                         content = { innerPadding ->
                             Box(
