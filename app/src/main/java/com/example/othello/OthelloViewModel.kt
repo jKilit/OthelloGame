@@ -22,7 +22,7 @@ data class Tile(
 class OthelloViewModel : ViewModel() {
 
     companion object {
-        const val BOARD_SIZE = 8
+        const val BOARD_SIZE = 5
     }
 
     private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { x -> //2d lista för logik
@@ -92,16 +92,6 @@ class OthelloViewModel : ViewModel() {
     var winner by mutableStateOf<String?>(null)
         private set
 
-    fun gameOver() {
-        isGameOver = true
-        val (blackScore, whiteScore) = getScores()
-        winner = when {
-            blackScore > whiteScore -> "Black"
-            whiteScore > blackScore -> "White"
-            else -> "It's a tie"
-        }
-    }
-
 
     // Function to handle a move
     fun makeMove(x: Int, y: Int, navController: NavController) {
@@ -118,8 +108,14 @@ class OthelloViewModel : ViewModel() {
             isBlackTurn = !isBlackTurn
 
             if (checkIsGameOver()) {
-                gameOver()
-                navController.navigate(Screen.GameOver.route)
+                val (blackScore, whiteScore) = getScores()
+                val winner = when {
+                    blackScore > whiteScore -> "Black"
+                    whiteScore > blackScore -> "White"
+                    else -> "It's a tie"
+                }
+
+                navController.navigate("${Screen.GameOver.route}/$winner/$blackScore/$whiteScore")
             }
         }
     }
@@ -595,16 +591,8 @@ class OthelloViewModel : ViewModel() {
         boardState.addAll(gameBoard.flatten())
     }
     fun getScores(): Pair<Int, Int> {
-        var blackScore = 0
-        var whiteScore = 0
-
-        for (tile in boardState) {
-            if (tile.isBlack) {
-                blackScore++
-            } else if (tile.isWhite) {
-                whiteScore++
-            }
-        }
+        val blackScore = boardState.count { it.isBlack }
+        val whiteScore = boardState.count { it.isWhite }
 
         return Pair(blackScore, whiteScore)
     }
