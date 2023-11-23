@@ -36,7 +36,7 @@ import io.garrit.android.multiplayer.SupabaseService.serverState
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkMode: Boolean) {
+fun LobbyScreen(navController: NavController, viewModel: Boolean, isDarkMode: Boolean) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
