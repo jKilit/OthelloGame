@@ -69,12 +69,16 @@ class OthelloViewModel : ViewModel() {
     }
 
     fun isGameOver(): Boolean {
-        for (tile in boardState) {
-            if (tile.isEmpty()) {
-                return false // Game is not over, there is an empty tile
+        // Check if there are any valid moves for the current player
+        for (i in 0 until BOARD_SIZE) {
+            for (j in 0 until BOARD_SIZE) {
+                val tile = getTile(i, j)
+                if (isValidMove(tile)) {
+                    return false // There is at least one valid move, game is not over
+                }
             }
         }
-        return true // All tiles are filled, game is over
+        return true // No valid moves left, game is over
     }
 
 
@@ -98,7 +102,7 @@ class OthelloViewModel : ViewModel() {
                 val (blackScore, whiteScore) = getScores()
                 val winner =
                     if (blackScore > whiteScore) "Black" else if (whiteScore > blackScore) "White" else "It's a tie"
-                            //gameOverScreen()
+                        //    gameOverScreen()
             }
         }
     }
