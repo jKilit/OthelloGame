@@ -31,7 +31,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun LobbyScreen(navController: NavController, isDarkMode: Boolean) {
     val serverState = SupabaseService.serverState.collectAsState()
-    var playerName by remember { mutableStateOf("") }
     val viewModel: LobbyViewModel = viewModel()
     //val users = SupabaseService.users.collectAsState() //PÅ DETTA SÄTT?
 
@@ -48,21 +47,6 @@ fun LobbyScreen(navController: NavController, isDarkMode: Boolean) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TextField(
-                value = playerName,
-                onValueChange = { playerName = it },
-                label = { Text("Enter your name") }
-            )
-            Button(
-                onClick = {
-                    viewModel.joinLobby(playerName)
-                }
-            ) {
-                Text(text = "Join Lobby")
-            }
-            Button(onClick = { viewModel.leaveLobby() }) {
-                Text("Leave Lobby")
-            }
 
             Button(
                 onClick = {

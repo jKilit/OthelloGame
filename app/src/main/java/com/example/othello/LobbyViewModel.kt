@@ -43,14 +43,11 @@ class LobbyViewModel : ViewModel() {
         }
     }
 
-    fun joinLobby(playerName: String) {
+    fun joinLobby(player: Player) {
         viewModelScope.launch {
-            if(playerName.isNotBlank()) {
-                val player = Player(name = playerName)
-                SupabaseService.joinLobby(player)
+            SupabaseService.joinLobby(player)
             }
         }
-    }
     fun leaveLobby(){
         viewModelScope.launch {
             SupabaseService.leaveLobby()
