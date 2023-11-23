@@ -24,6 +24,7 @@ class OthelloViewModel : ViewModel() {
 
     private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { x -> //2d lista för logik
         List(BOARD_SIZE) { y ->
+            println("$x, $y")
             Tile(x, y, isBlack = false, isWhite = false)
         }
     }
@@ -112,10 +113,15 @@ class OthelloViewModel : ViewModel() {
             for (j in -1..1) {
                 if (i == 0 && j == 0) continue // Skip the current tile
 
-                val adjacentTile = getTile(tile.x + i, tile.y + j)
+                val newX = tile.x + i
+                val newY = tile.y + j
 
-                if (isValidDirection(tile, adjacentTile, i, j)) {
-                    return true
+                if (newX in 0 until BOARD_SIZE && newY in 0 until BOARD_SIZE) {
+                    val adjacentTile = getTile(newX, newY)
+
+                    if (isValidDirection(tile, adjacentTile, i, j)) {
+                        return true
+                    }
                 }
             }
         }
