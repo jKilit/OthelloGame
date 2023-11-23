@@ -23,9 +23,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 
 @Composable
-fun GameScreen(viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
+fun GameScreen(navController: NavController, viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
     val gameBoard = viewModel.boardState
 
     Column(
@@ -49,7 +50,7 @@ fun GameScreen(viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
             ) {
                 items(gameBoard) { tile ->
                     TileView(tile = tile, onClick = {
-                        viewModel.makeMove(tile.x, tile.y)
+                        viewModel.makeMove(tile.x, tile.y, navController)
                     })
                 }
             }

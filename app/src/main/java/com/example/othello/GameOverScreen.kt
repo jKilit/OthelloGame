@@ -2,6 +2,7 @@ package com.example.othello
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -18,7 +19,7 @@ import androidx.compose.ui.unit.dp
 
 //FIXA DENNA, Implementera en kallelse från Gamescreen också där man kollar if gameIsOver och skicka in dem parametrar som behövs hit
 @Composable
-fun GameOverScreen(/*winningPlayer: Player, stats String, onRestart: () -> Unit*/) {
+fun GameOverScreen(viewModel: OthelloViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,16 +31,20 @@ fun GameOverScreen(/*winningPlayer: Player, stats String, onRestart: () -> Unit*
 
         Spacer(modifier = Modifier.height(16.dp))
 
-      //  Text("Winner: ${winningPlayer.name}", style = MaterialTheme.typography.body1)
+        val winner = viewModel.winner
+        if (winner != null) {
+            Text("Winner: $winner", style = MaterialTheme.typography.bodyLarge)
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
-      //  Text("Stats: $stats", style = MaterialTheme.typography.body2)
+        val (blackScore, whiteScore) = viewModel.getScores()
+        Text("Scores: Black - $blackScore, White - $whiteScore", style = MaterialTheme.typography.bodyMedium)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-       /* Button(onClick = onRestart) {
-            Text("Restart Game") */
-            //FIX
+        Button(onClick = { /* Restart Game logic */ }) {
+            Text("Restart Game")
         }
     }
+}
