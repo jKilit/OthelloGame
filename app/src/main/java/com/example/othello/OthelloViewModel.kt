@@ -102,7 +102,7 @@ class OthelloViewModel : ViewModel() {
                 val (blackScore, whiteScore) = getScores()
                 val winner =
                     if (blackScore > whiteScore) "Black" else if (whiteScore > blackScore) "White" else "It's a tie"
-                            //gameOverScreen()
+                        //    gameOverScreen()
             }
         }
     }
