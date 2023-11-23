@@ -3,7 +3,10 @@ package com.example.othello
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 
 data class Tile(
     val x: Int,
@@ -68,7 +71,7 @@ class OthelloViewModel : ViewModel() {
         current.isWhite = true
     }
 
-    fun isGameOver(): Boolean {
+    fun checkIsGameOver(): Boolean {
         // Check if there are any valid moves for the current player
         for (i in 0 until BOARD_SIZE) {
             for (j in 0 until BOARD_SIZE) {
@@ -81,9 +84,27 @@ class OthelloViewModel : ViewModel() {
         return true // No valid moves left, game is over
     }
 
+    // MutableState to track if the game is over
+    var isGameOver by mutableStateOf(false)
+        private set
+
+    // MutableState to store the winner
+    var winner by mutableStateOf<String?>(null)
+        private set
+
+    fun gameOver() {
+        isGameOver = true
+        val (blackScore, whiteScore) = getScores()
+        winner = when {
+            blackScore > whiteScore -> "Black"
+            whiteScore > blackScore -> "White"
+            else -> "It's a tie"
+        }
+    }
+
 
     // Function to handle a move
-   fun makeMove(x: Int, y: Int) {//göra specifika movet
+    fun makeMove(x: Int, y: Int, navController: NavController) {
         val selectedTile = getTile(x, y)
 
         if (isValidMove(selectedTile)) {
@@ -92,17 +113,13 @@ class OthelloViewModel : ViewModel() {
             } else {
                 makeWhite(x, y)
             }
-            updateBoardState()//After flip?
+            updateBoardState()
             flipTiles(x, y)
-            isBlackTurn = !isBlackTurn  // Switch turn after a valid move
+            isBlackTurn = !isBlackTurn
 
-            // Check if the game is over after each move
-            if (isGameOver()) {
-                // Game is over, calculate and display the winner
-                val (blackScore, whiteScore) = getScores()
-                val winner =
-                    if (blackScore > whiteScore) "Black" else if (whiteScore > blackScore) "White" else "It's a tie"
-                        //    gameOverScreen()
+            if (checkIsGameOver()) {
+                gameOver()
+                navController.navigate(Screen.GameOver.route)
             }
         }
     }
