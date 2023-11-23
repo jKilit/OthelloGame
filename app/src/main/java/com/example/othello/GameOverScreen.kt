@@ -13,13 +13,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 
 
-//FIXA DENNA, Implementera en kallelse från Gamescreen också där man kollar if gameIsOver och skicka in dem parametrar som behövs hit
 @Composable
-fun GameOverScreen(viewModel: OthelloViewModel = viewModel()) {
+fun GameOverScreen(
+    viewModel: OthelloViewModel = viewModel(),
+    winner: String,
+    blackScore: Int,
+    whiteScore: Int
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,15 +36,14 @@ fun GameOverScreen(viewModel: OthelloViewModel = viewModel()) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        val winner = viewModel.winner
-        if (winner != null) {
-            Text("Winner: $winner", style = MaterialTheme.typography.bodyLarge)
-        }
+            Text(
+                "Winner: $winner",
+                style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black)
+            )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        val (blackScore, whiteScore) = viewModel.getScores()
-        Text("Scores: Black - $blackScore, White - $whiteScore", style = MaterialTheme.typography.bodyMedium)
+        Text("Scores: Black: $blackScore, White: $whiteScore", style = MaterialTheme.typography.bodyMedium)
 
         Spacer(modifier = Modifier.height(16.dp))
 
