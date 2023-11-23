@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -89,12 +90,12 @@ class MainActivity : ComponentActivity() {
                                     composable(route = Screen.Game.route) {
                                         topBarTitle = "Exit Game"
                                         showBackButton = true
-                                        GameScreen(isDarkMode = isDarkMode)
+                                        GameScreen(navController = navController, viewModel = viewModel(), isDarkMode = isDarkMode)
                                     }
                                     composable(route = Screen.GameOver.route) {
                                         topBarTitle = "Game Over"
                                         showBackButton = true
-                                        GameOverScreen()
+                                        GameOverScreen(viewModel = viewModel())
                                     }
                                     composable(route = Screen.Settings.route) {
                                         topBarTitle = "Back to Home"
