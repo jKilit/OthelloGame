@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                                     composable(route = Screen.Start.route) {
                                         topBarTitle = ""
                                         showBackButton = false
-                                        StartScreen(navController = navController, isDarkMode)
+                                        StartScreen(navController = navController, viewModel = LobbyViewModel(), isDarkMode)
                                     }
                                     composable(route = Screen.Game.route) {
                                         topBarTitle = "Exit Game"
