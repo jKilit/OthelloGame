@@ -43,7 +43,8 @@ fun GameOverScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text("Scores: Black: $blackScore, White: $whiteScore", style = MaterialTheme.typography.bodyMedium)
+        val finalScores = viewModel.getFinalScores()
+        Text("Scores: Black - ${finalScores.first}, White - ${finalScores.second}", style = MaterialTheme.typography.bodyMedium)
 
         Spacer(modifier = Modifier.height(16.dp))
 

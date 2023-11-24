@@ -92,6 +92,15 @@ class OthelloViewModel : ViewModel() {
     var winner by mutableStateOf<String?>(null)
         private set
 
+    private var finalScores: Pair<Int, Int>? = null
+        private set
+
+    // ... (your existing code)
+
+    fun getFinalScores(): Pair<Int, Int>? {
+        return finalScores
+    }
+
 
     // Function to handle a move
     fun makeMove(x: Int, y: Int, navController: NavController) {
@@ -109,6 +118,7 @@ class OthelloViewModel : ViewModel() {
 
             if (checkIsGameOver()) {
                 val (blackScore, whiteScore) = getScores()
+                finalScores = Pair(blackScore, whiteScore)
                 val winner = when {
                     blackScore > whiteScore -> "Black"
                     whiteScore > blackScore -> "White"
