@@ -93,7 +93,7 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
 
             Box(
                 modifier = Modifier
-                    .border(width = 2.dp, color = Color(0xFFBAA153),)
+                    .border(width = 2.dp, color = Color.DarkGray,)
             ) {
                 TextField(
                     value = username,
