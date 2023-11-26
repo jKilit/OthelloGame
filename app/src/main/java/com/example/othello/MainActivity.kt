@@ -95,8 +95,8 @@ class MainActivity : ComponentActivity() {
                                     }
                                     composable(route = "${Screen.GameOver.route}/{winner}/{blackScore}/{whiteScore}") { backStackEntry ->
                                         val winner = backStackEntry.arguments?.getString("winner") ?: ""
-                                        val blackScore = backStackEntry.arguments?.getInt("blackScore") ?: 0
-                                        val whiteScore = backStackEntry.arguments?.getInt("whiteScore") ?: 0
+                                        val blackScore = backStackEntry.arguments?.getString("blackScore") ?: "0"
+                                        val whiteScore = backStackEntry.arguments?.getString("whiteScore") ?: "0"
 
                                         topBarTitle = "Game Over"
                                         showBackButton = true
@@ -112,7 +112,7 @@ class MainActivity : ComponentActivity() {
                                     composable(route = Screen.Lobby.route) {
                                         topBarTitle = "Back to Start screen"
                                         showBackButton = true
-                                        LobbyScreen(navController = navController, viewModel = viewmodel)
+                                        LobbyScreen(navController = navController, viewModel = LobbyViewModel(), isDarkMode)
                                     }
                                 }
                             }

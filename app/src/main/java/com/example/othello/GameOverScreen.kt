@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 fun GameOverScreen(
     viewModel: OthelloViewModel = viewModel(),
     winner: String,
-    blackScore: Int,
-    whiteScore: Int
+    blackScore: String,
+    whiteScore: String
 ) {
     Column(
         modifier = Modifier
@@ -43,8 +43,9 @@ fun GameOverScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        val finalScores = viewModel.getFinalScores()
-        Text("Scores: Black - ${finalScores.first}, White - ${finalScores.second}", style = MaterialTheme.typography.bodyMedium)
+
+            Text("Scores: Black - $blackScore, White - $whiteScore", style = MaterialTheme.typography.bodyMedium)
+
 
         Spacer(modifier = Modifier.height(16.dp))
 

@@ -92,14 +92,19 @@ class OthelloViewModel : ViewModel() {
     var winner by mutableStateOf<String?>(null)
         private set
 
+    var blackScoreString by mutableStateOf<String?>(null)
+        private set
+
+    var whiteScoreString by mutableStateOf<String?>(null)
+        private set
+
+
     private var finalScores: Pair<Int, Int>? = null
         private set
 
     // ... (your existing code)
 
-    fun getFinalScores(): Pair<Int, Int>? {
-        return finalScores
-    }
+
 
 
     // Function to handle a move
@@ -116,16 +121,23 @@ class OthelloViewModel : ViewModel() {
             flipTiles(x, y)
             isBlackTurn = !isBlackTurn
 
+            val (blackScore, whiteScore) = getScores()
+            println("Debug: Black Score: $blackScore, White Score: $whiteScore")
+
             if (checkIsGameOver()) {
                 val (blackScore, whiteScore) = getScores()
                 finalScores = Pair(blackScore, whiteScore)
-                val winner = when {
+                 winner = when {
                     blackScore > whiteScore -> "Black"
                     whiteScore > blackScore -> "White"
                     else -> "It's a tie"
                 }
+                println("Debug: Final Scores: $finalScores, Winner: $winner")
+                blackScoreString = finalScores?.first?.toString()
+                whiteScoreString = finalScores?.second?.toString()
 
-                navController.navigate("${Screen.GameOver.route}/$winner/$blackScore/$whiteScore")
+
+                navController.navigate("${Screen.GameOver.route}/$winner/$blackScoreString/$whiteScoreString")
             }
         }
     }
@@ -180,7 +192,7 @@ class OthelloViewModel : ViewModel() {
     }
 
 
-    // Place a piece on the board
+    // Place a piece on the board  //Behövs denna verkligen?
     private fun putPiece(x: Int, y: Int, isBlack: Boolean) {
         if (isBlack) {
             makeBlack(x,y)
