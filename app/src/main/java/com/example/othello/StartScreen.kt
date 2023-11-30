@@ -76,6 +76,7 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 modifier = Modifier.padding(vertical = 8.dp)
             )
 
+            Spacer(modifier = Modifier.height(30.dp))
 
 
             Text(
