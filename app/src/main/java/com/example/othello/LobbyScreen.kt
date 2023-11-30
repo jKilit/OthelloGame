@@ -182,7 +182,7 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
             text = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        fontSize = 10.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
@@ -193,7 +193,7 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
 
                 withStyle(
                     style = SpanStyle(
-                        fontSize = 10.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
