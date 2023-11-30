@@ -34,8 +34,8 @@ fun Validation(text: String, buttonTitle: String, onValidInput: () -> Unit) {
         onClick = {
             if (text.length < 3) {
                 Toast.makeText(context, "Title more than 3 characters", Toast.LENGTH_LONG).show()
-            } else if (text.length > 120) {
-                Toast.makeText(context, "Text less than 120 characters", Toast.LENGTH_LONG).show()
+            } else if (text.length > 10) {
+                Toast.makeText(context, "Text less than 10 characters", Toast.LENGTH_LONG).show()
             } else {
                 onValidInput()
             }
@@ -107,7 +107,6 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-
             Validation(
                 text = username,
                 buttonTitle = "Join Lobby",
