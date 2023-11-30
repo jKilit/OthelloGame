@@ -22,7 +22,7 @@ data class Tile(
 class OthelloViewModel : ViewModel() {
 
     companion object {
-        const val BOARD_SIZE = 5
+        const val BOARD_SIZE = 8
     }
 
     private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { x -> //2d lista för logik

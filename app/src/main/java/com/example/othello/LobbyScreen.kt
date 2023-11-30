@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -73,7 +74,11 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
 
             LazyColumn(
                 modifier = Modifier
-                    .border(width = 6.dp, color = Color.LightGray, shape = RoundedCornerShape(10.dp))
+                    .border(
+                        width = 6.dp,
+                        color = Color.LightGray,
+                        shape = RoundedCornerShape(10.dp)
+                    )
                     .width(280.dp)
                     .height(140.dp)
             ) {
@@ -96,7 +101,11 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
-                    .border(width = 6.dp, color = Color.LightGray, shape = RoundedCornerShape(10.dp))
+                    .border(
+                        width = 6.dp,
+                        color = Color.LightGray,
+                        shape = RoundedCornerShape(10.dp)
+                    )
                     .width(280.dp)
                     .height(140.dp)
             ) {
@@ -113,7 +122,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 Text(text = "Start Game")
             }
 
-            when (serverState.value) {
+            when (serverState.collectAsState().value) {
                 ServerState.NOT_CONNECTED -> Text("Not Connected")
                 ServerState.LOADING_LOBBY -> CircularProgressIndicator()
                 ServerState.LOBBY -> Text("In the lobby...")
@@ -221,7 +230,7 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                 ),
                 modifier = Modifier
                     .width(60.dp)
-                    .height(25.dp)
+                    .height(25.dp) //gör större
             ) {
                 Text(
                     text = "Accept Game",
