@@ -193,7 +193,7 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                         color = Color.Black
                     )
                 ) {
-                    append(player.player1.name + "challenged you")
+                    append(player.player1.name + " challenged you")
                 }
 
             },
@@ -217,8 +217,8 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                     containerColor = Color.DarkGray
                 ),
                 modifier = Modifier
-                    .width(75.dp)
-                    .height(30.dp)
+                    .width(110.dp)
+                    .height(35.dp)
             ) {
                 Text(
                     text = "Accept Game",
@@ -237,8 +237,8 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                     containerColor = Color.DarkGray
                 ),
                 modifier = Modifier
-                    .width(75.dp)
-                    .height(30.dp)
+                    .width(110.dp)
+                    .height(35.dp)
             ) {
                 Text(
                     text = "Decline Game",
