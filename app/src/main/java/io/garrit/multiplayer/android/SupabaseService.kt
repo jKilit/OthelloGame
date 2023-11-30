@@ -120,7 +120,6 @@ object SupabaseService {
 
     val serverState = MutableStateFlow(ServerState.NOT_CONNECTED)
     var player: Player? = null
-        private set
     var users = mutableStateListOf<Player>()
         private  set
     var games = mutableStateListOf<Game>()
