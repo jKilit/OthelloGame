@@ -7,5 +7,6 @@ sealed class Screen(val route: String) {
     object GameOver : Screen(route = "gameover")
 
     object Settings : Screen(route = "settings")
+    object Rules : Screen(route = "rules")
 
 }

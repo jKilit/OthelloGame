@@ -76,14 +76,7 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 modifier = Modifier.padding(vertical = 8.dp)
             )
 
-            Text(
-                text = "Instructions:\n1. Black starts the game.\n2. Players take turns placing their color on an empty cell.\n3. To capture opponent's pieces, sandwich them between your own.\n4. The game ends when the board is full or no more moves can be made.",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    color = if (isDarkMode) Color.White else Color.Black
-                ),
-                modifier = Modifier.padding(vertical = 16.dp)
-            )
+
 
             Text(
                 text = "Enter your username",
@@ -116,8 +109,9 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 }
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
 
+
+            Spacer(modifier = Modifier.height(10.dp))
             Button(onClick = {
                 navController.navigate(Screen.Settings.route)
             }) {
@@ -130,6 +124,13 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 style = TextStyle(fontSize = 16.sp, color = Color.Gray),
                 modifier = Modifier.padding(vertical = 16.dp)
             )
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(onClick = {
+                navController.navigate(Screen.Rules.route)
+            }) {
+                Text("View Rules")
+            }
         }
     }
 }
