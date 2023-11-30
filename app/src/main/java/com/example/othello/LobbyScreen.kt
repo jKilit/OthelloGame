@@ -46,7 +46,6 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -65,7 +64,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
             Text(
                 text = "Players Online",
                 style=TextStyle(
-                    fontSize = 30.sp,
+                    fontSize = 22.sp,
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -80,7 +79,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                         shape = RoundedCornerShape(10.dp)
                     )
                     .width(280.dp)
-                    .height(140.dp)
+                    .height(180.dp)
             ) {
                 items(SupabaseService.users) { player ->
                     onlinePlayers(player, viewModel)
@@ -91,7 +90,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
             Text(
                 text = "Your Challenges",
                 style=TextStyle(
-                    fontSize = 30.sp,
+                    fontSize = 22.sp,
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -107,7 +106,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                         shape = RoundedCornerShape(10.dp)
                     )
                     .width(280.dp)
-                    .height(140.dp)
+                    .height(180.dp)
             ) {
                 items(SupabaseService.games) { game ->
                     challenges(navController, game, viewModel)
@@ -183,7 +182,7 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
             text = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        fontSize = 20.sp,
+                        fontSize = 7.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
@@ -194,7 +193,7 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
 
                 withStyle(
                     style = SpanStyle(
-                        fontSize = 20.sp,
+                        fontSize = 7.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
@@ -222,8 +221,8 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                     containerColor = Color.DarkGray
                 ),
                 modifier = Modifier
-                    .width(100.dp)
-                    .height(40.dp) //gör större
+                    .width(75.dp)
+                    .height(30.dp)
             ) {
                 Text(
                     text = "Accept Game",
@@ -241,8 +240,8 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                     containerColor = Color.DarkGray
                 ),
                 modifier = Modifier
-                    .width(100.dp)
-                    .height(40.dp)
+                    .width(75.dp)
+                    .height(30.dp)
             ) {
                 Text(
                     text = "Decline Game",
@@ -251,7 +250,6 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
             }
         }
     }
-
 }
 
 
