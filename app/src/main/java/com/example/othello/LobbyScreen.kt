@@ -54,7 +54,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                     fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.Bold,
                     fontSize = 36.sp,
-                    color = Color.Black
+                    color = if (isDarkMode) Color.White else Color.DarkGray
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -63,9 +63,9 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
 
             Text(
                 text = "Players Online",
-                style=TextStyle(
-                    fontSize = 22.sp,
-                ),
+
+                style=TextStyle(fontSize = 22.sp,
+                    color = if (isDarkMode) Color.White else Color.DarkGray),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
             )
@@ -82,7 +82,8 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                     .height(180.dp)
             ) {
                 items(SupabaseService.users) { player ->
-                    onlinePlayers(player, viewModel)
+                    onlinePlayers(player = player, viewModel = viewModel, isDarkMode = isDarkMode)
+
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -93,7 +94,8 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                     fontSize = 22.sp,
                 ),
                 textAlign = TextAlign.Center,
-                modifier = Modifier
+                modifier = Modifier,
+                color = if (isDarkMode) Color.White else Color.DarkGray
             )
             Spacer(modifier = Modifier.height(5.dp))
 
@@ -117,14 +119,17 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
             when (serverState.collectAsState().value) {
                 ServerState.NOT_CONNECTED -> Text("Not Connected")
                 ServerState.LOADING_LOBBY -> CircularProgressIndicator()
-                ServerState.LOBBY -> Text("In the lobby...")
+                ServerState.LOBBY -> Text("In the lobby...",
+                    color = if (isDarkMode) Color.White else Color.DarkGray
+                )
                 ServerState.LOADING_GAME -> Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CircularProgressIndicator()
-                    Text("Loading Game...")
+                    Text("Loading Game...",color = if (isDarkMode) Color.White else Color.DarkGray
+                    )
                 }
                 ServerState.GAME -> LaunchedEffect(key1 = Unit) {
                     navController.navigate(Screen.Game.route) {
@@ -137,7 +142,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
 }
 
 @Composable
-fun onlinePlayers(player: Player, viewModel: LobbyViewModel) {
+fun onlinePlayers(player: Player, viewModel: LobbyViewModel, isDarkMode: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -145,6 +150,7 @@ fun onlinePlayers(player: Player, viewModel: LobbyViewModel) {
     ) {
         Text(
             text = player.name,
+            color = if (isDarkMode) Color.White else Color.DarkGray,
             modifier = Modifier
                 .width(150.dp)
                 .padding(end = 10.dp)
