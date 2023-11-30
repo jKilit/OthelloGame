@@ -229,8 +229,8 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                     containerColor = Color.DarkGray
                 ),
                 modifier = Modifier
-                    .width(60.dp)
-                    .height(25.dp) //gör större
+                    .width(100.dp)
+                    .height(40.dp) //gör större
             ) {
                 Text(
                     text = "Accept Game",
@@ -248,8 +248,8 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                     containerColor = Color.DarkGray
                 ),
                 modifier = Modifier
-                    .width(60.dp)
-                    .height(25.dp)
+                    .width(100.dp)
+                    .height(40.dp)
             ) {
                 Text(
                     text = "Decline Game",
