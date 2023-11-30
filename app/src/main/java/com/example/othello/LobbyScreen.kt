@@ -187,19 +187,9 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                         color = Color.Black
                     )
                 ) {
-                    append(player.player1.name)
+                    append(player.player1.name + "challenged you")
                 }
-                append("\n") //break
 
-                withStyle(
-                    style = SpanStyle(
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
-                    )
-                ) {
-                    append("has challenged you")
-                }
             },
             modifier = Modifier
                 .padding(start = 20.dp, top = 20.dp)
