@@ -14,7 +14,6 @@ class LobbyViewModel : ViewModel() {
 
     //BARA BÖRJAN, en mall! h
     sealed class Event {
-        data class StartGame(val opponent: String, val difficulty: String) : Event()
         data class JoinGame(val game: Game) : Event()
     }
 

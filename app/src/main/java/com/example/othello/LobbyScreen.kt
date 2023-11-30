@@ -115,13 +115,6 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(
-                onClick = { navController.navigate(Screen.Game.route) },
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(text = "Start Game")
-            }
-
             when (serverState.collectAsState().value) {
                 ServerState.NOT_CONNECTED -> Text("Not Connected")
                 ServerState.LOADING_LOBBY -> CircularProgressIndicator()
