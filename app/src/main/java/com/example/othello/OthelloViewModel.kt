@@ -6,7 +6,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import io.garrit.android.multiplayer.ActionResult
+import io.garrit.android.multiplayer.GameResult
+import io.garrit.android.multiplayer.SupabaseCallback
+import io.garrit.android.multiplayer.SupabaseService
+import kotlinx.coroutines.launch
 
 data class Tile(
     val x: Int,
@@ -19,14 +25,14 @@ data class Tile(
     }
 }
 
-class OthelloViewModel : ViewModel() {
+class OthelloViewModel : ViewModel(), SupabaseCallback {
 
     companion object {
         const val BOARD_SIZE = 8
     }
 
-    private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { x -> //2d lista för logik
-        List(BOARD_SIZE) { y ->
+    private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { y -> //2d lista för logik
+        List(BOARD_SIZE) { x ->
             println("$x, $y")
             Tile(x, y, isBlack = false, isWhite = false)
         }
@@ -46,6 +52,8 @@ class OthelloViewModel : ViewModel() {
         makeWhite(3, 4)
         makeWhite(4, 3)
         makeBlack(4, 4)
+
+        SupabaseService.callbackHandler = this
     }
 
     fun flip(x: Int, y: Int) { //inside viewmodel now
@@ -120,6 +128,10 @@ class OthelloViewModel : ViewModel() {
             updateBoardState()
             flipTiles(x, y)
             isBlackTurn = !isBlackTurn
+
+            viewModelScope.launch {
+                SupabaseService.sendTurn(x, y)
+            }
 
             val (blackScore, whiteScore) = getScores()
             println("Debug: Black Score: $blackScore, White Score: $whiteScore")
@@ -605,7 +617,7 @@ class OthelloViewModel : ViewModel() {
 
     // Get the tile at a specific position
     private fun getTile(x: Int, y: Int): Tile {
-        return boardState[x * BOARD_SIZE + y]
+        return boardState[y * BOARD_SIZE + x]
     }
 
     private fun updateBoardState() {
@@ -617,6 +629,26 @@ class OthelloViewModel : ViewModel() {
         val whiteScore = boardState.count { it.isWhite }
 
         return Pair(blackScore, whiteScore)
+    }
+
+    override suspend fun playerReadyHandler() {
+        println("Not yet implemented")
+    }
+
+    override suspend fun releaseTurnHandler() {
+        println("Not yet implemented")
+    }
+
+    override suspend fun actionHandler(x: Int, y: Int) {
+        println("Not yet implemented $x, $y")
+    }
+
+    override suspend fun answerHandler(status: ActionResult) {
+        println("Not yet implemented")
+    }
+
+    override suspend fun finishHandler(status: GameResult) {
+        println("Not yet implemented")
     }
 
 }
