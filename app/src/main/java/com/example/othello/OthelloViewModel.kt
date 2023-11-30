@@ -632,15 +632,29 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
     override suspend fun playerReadyHandler() {
+        SupabaseService.playerReady()
         println("Not yet implemented")
+
     }
 
     override suspend fun releaseTurnHandler() {
-        println("Not yet implemented")
+        isBlackTurn = !isBlackTurn
     }
 
     override suspend fun actionHandler(x: Int, y: Int) {
-        println("Not yet implemented $x, $y")
+        val tile = getTile(x, y)
+        if (isValidMove(tile)) {
+            if (!isBlackTurn) {
+                makeBlack(x, y)
+            } else {
+                makeWhite(x, y)
+            }
+            updateBoardState()
+            flipTiles(x, y)
+            // Switch turn to the local player.
+            isBlackTurn = !isBlackTurn
+            checkIsGameOver()
+        }
     }
 
     override suspend fun answerHandler(status: ActionResult) {
