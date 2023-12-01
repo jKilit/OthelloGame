@@ -37,7 +37,7 @@ fun GameScreen(navController: NavController, viewModel: OthelloViewModel, isDark
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            if (viewModel.isBlackTurn && viewModel.isYourTurn) {
+            if (viewModel.isYourTurn) {
                 Text(
                     text = "Your Turn",
                     fontSize = 20.sp,
