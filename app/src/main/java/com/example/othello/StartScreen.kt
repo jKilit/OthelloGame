@@ -122,7 +122,11 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
             Text(
                 text = "About Othello:\nOthello is a classic strategy board game for two players. It's also known as Reversi. We hope you will enjoy it!",
                 color = if (isDarkMode) Color.White else Color.Black,
-                style = TextStyle(fontSize = 16.sp, color = Color.Gray),
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center // Center the text horizontally
+                ),
                 modifier = Modifier.padding(vertical = 16.dp)
             )
 

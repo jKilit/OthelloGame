@@ -110,12 +110,12 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                     composable(Screen.Rules.route) {
-                                        topBarTitle = "Back to Start screen"
+                                        topBarTitle = "Back to Home"
                                         showBackButton = true
                                         RulesScreen(isDarkMode)
                                     }
                                     composable(route = Screen.Lobby.route) {
-                                        topBarTitle = "Back to Start screen"
+                                        topBarTitle = "Back to Home"
                                         showBackButton = true
                                         LobbyScreen(navController = navController, viewModel = LobbyViewModel(), isDarkMode)
                                     }
