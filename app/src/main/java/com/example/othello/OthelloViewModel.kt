@@ -644,7 +644,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
     override suspend fun answerHandler(status: ActionResult) {
-        println("Not yet implemented")
+        updateBoardState()
     }
 
     override suspend fun finishHandler(status: GameResult) {
