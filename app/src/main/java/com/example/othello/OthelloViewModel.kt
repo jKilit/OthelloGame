@@ -26,7 +26,7 @@ data class Tile(
     }
 }
 
-class OthelloViewModel(val navController: NavController) : ViewModel(), SupabaseCallback {
+class OthelloViewModel : ViewModel(), SupabaseCallback {
     companion object {
         const val BOARD_SIZE = 8
     }
@@ -121,7 +121,7 @@ class OthelloViewModel(val navController: NavController) : ViewModel(), Supabase
 
 
     // Function to handle a move
-    fun makeMove(x: Int, y: Int) {
+    fun makeMove(x: Int, y: Int, navController: NavController) {
         if (!isYourTurn) {
             // It's not the current player's turn
             println("Not your turn")
@@ -150,24 +150,21 @@ class OthelloViewModel(val navController: NavController) : ViewModel(), Supabase
             println("Debug: Black Score: $blackScore, White Score: $whiteScore")
 
             if (checkIsGameOver()) {
-                finishGame()
+                val (blackScore, whiteScore) = getScores()
+                finalScores = Pair(blackScore, whiteScore)
+                winner = when {
+                    blackScore > whiteScore -> "Black"
+                    whiteScore > blackScore -> "White"
+                    else -> "It's a tie"
+                }
+                println("Debug: Final Scores: $finalScores, Winner: $winner")
+                blackScoreString = finalScores?.first?.toString()
+                whiteScoreString = finalScores?.second?.toString()
+
+
+                navController.navigate("${Screen.GameOver.route}/$winner/$blackScoreString/$whiteScoreString")
             }
         }
-    }
-
-    private fun finishGame(){
-        val (blackScore, whiteScore) = getScores()
-        finalScores = Pair(blackScore, whiteScore)
-        winner = when {
-            blackScore > whiteScore -> "Black"
-            whiteScore > blackScore -> "White"
-            else -> "It's a tie"
-        }
-        println("Debug: Final Scores: $finalScores, Winner: $winner")
-        blackScoreString = finalScores?.first?.toString()
-        whiteScoreString = finalScores?.second?.toString()
-
-        navController.navigate("${Screen.GameOver.route}/$winner/$blackScoreString/$whiteScoreString")
     }
 
     // Inside OthelloViewModel
@@ -681,7 +678,7 @@ class OthelloViewModel(val navController: NavController) : ViewModel(), Supabase
     }
 
     override suspend fun finishHandler(status: GameResult) {
-        finishGame()
+        println("Not yet implemented")
     }
 
 }

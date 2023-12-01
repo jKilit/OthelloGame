@@ -49,8 +49,8 @@ fun GameOverScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { /*FIX BACK TO START SCREEN*/ }) {
-            Text("Back to home")
+        Button(onClick = { /* Restart Game logic */ }) {
+            Text("Restart Game")
         }
     }
 }
