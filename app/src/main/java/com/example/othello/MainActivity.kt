@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
                                     composable(route = Screen.Game.route) {
                                         topBarTitle = "Exit Game"
                                         showBackButton = true
-                                        GameScreen(navController = navController, viewModel = viewModel(), isDarkMode = isDarkMode)
+                                        GameScreen(navController = navController, viewModel = OthelloViewModel(navController), isDarkMode = isDarkMode)
                                     }
                                     composable(route = "${Screen.GameOver.route}/{winner}/{blackScore}/{whiteScore}") { backStackEntry ->
                                         val winner = backStackEntry.arguments?.getString("winner") ?: ""

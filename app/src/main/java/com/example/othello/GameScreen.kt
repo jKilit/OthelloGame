@@ -23,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
-fun GameScreen(navController: NavController, viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
+fun GameScreen(navController: NavController, viewModel: OthelloViewModel, isDarkMode: Boolean) {
     val gameBoard = viewModel.boardState
 
     Column(
@@ -62,7 +62,7 @@ fun GameScreen(navController: NavController, viewModel: OthelloViewModel = viewM
             ) {
                 items(gameBoard) { tile ->
                     TileView(tile = tile, onClick = {
-                        viewModel.makeMove(tile.x, tile.y, navController)
+                        viewModel.makeMove(tile.x, tile.y)
                     })
                 }
             }
