@@ -12,6 +12,7 @@ import io.garrit.android.multiplayer.ActionResult
 import io.garrit.android.multiplayer.GameResult
 import io.garrit.android.multiplayer.SupabaseCallback
 import io.garrit.android.multiplayer.SupabaseService
+import io.garrit.android.multiplayer.SupabaseService.currentGame
 import kotlinx.coroutines.launch
 
 data class Tile(
@@ -26,7 +27,6 @@ data class Tile(
 }
 
 class OthelloViewModel : ViewModel(), SupabaseCallback {
-
     companion object {
         const val BOARD_SIZE = 8
     }
@@ -39,12 +39,14 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
     // MutableStateList is used to observe changes to the list in Compose
-     val boardState = mutableStateListOf<Tile>().apply {//skapar en 1d lista av 2d gameboard och lägger den i boardstate
+    val boardState = mutableStateListOf<Tile>().apply {//skapar en 1d lista av 2d gameboard och lägger den i boardstate
         addAll(gameBoard.flatten())
     }
 
-    internal var isBlackTurn = true
-        private set
+    private var isYourTurn by mutableStateOf(false)
+    private var isBlackPlayer by mutableStateOf(false)
+    val isBlackTurn
+        get() = (isYourTurn && isBlackPlayer) || (!isYourTurn && !isBlackPlayer)
 
     init { //initziering block, koden körs när othello classen skapas
         // Initialize the starting position of Othello
@@ -54,6 +56,11 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
         makeBlack(4, 4)
 
         SupabaseService.callbackHandler = this
+
+        currentGame?.let { currentGame ->
+            isBlackPlayer = SupabaseService.player?.id == currentGame.player1.id
+            isYourTurn = isBlackPlayer
+        }
     }
 
     fun flip(x: Int, y: Int) { //inside viewmodel now
@@ -110,13 +117,16 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     private var finalScores: Pair<Int, Int>? = null
         private set
 
-    // ... (your existing code)
-
 
 
 
     // Function to handle a move
     fun makeMove(x: Int, y: Int, navController: NavController) {
+        if (!isYourTurn) {
+            // It's not the current player's turn
+            println("Not your turn")
+            return
+        }
         val selectedTile = getTile(x, y)
 
         if (isValidMove(selectedTile)) {
@@ -127,10 +137,13 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
             }
             updateBoardState()
             flipTiles(x, y)
-            isBlackTurn = !isBlackTurn
+            //  isBlackTurn = !isBlackTurn vänta
 
             viewModelScope.launch {
                 SupabaseService.sendTurn(x, y)
+                SupabaseService.releaseTurn()
+
+                isYourTurn = false
             }
 
             val (blackScore, whiteScore) = getScores()
@@ -139,7 +152,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
             if (checkIsGameOver()) {
                 val (blackScore, whiteScore) = getScores()
                 finalScores = Pair(blackScore, whiteScore)
-                 winner = when {
+                winner = when {
                     blackScore > whiteScore -> "Black"
                     whiteScore > blackScore -> "White"
                     else -> "It's a tie"
@@ -632,16 +645,33 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
     override suspend fun playerReadyHandler() {
+        SupabaseService.playerReady()
         println("Not yet implemented")
+
     }
 
     override suspend fun releaseTurnHandler() {
-        println("Not yet implemented")
+        println("releaseTurnHandler $isYourTurn $isBlackTurn")
+        isYourTurn = true
     }
 
+
     override suspend fun actionHandler(x: Int, y: Int) {
-        println("Not yet implemented $x, $y")
+        val tile = getTile(x, y)
+
+        // Only proceed if the tile is empty
+        if (tile.isEmpty()) {
+            if (isBlackPlayer) {
+                makeWhite(x, y) // If the current player is black, the other player is white
+            } else {
+                makeBlack(x, y) // If the current player is white, the other player is black
+            }
+
+            updateBoardState()
+            flipTiles(x, y)
+        }
     }
+
 
     override suspend fun answerHandler(status: ActionResult) {
         updateBoardState()
