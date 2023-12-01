@@ -32,7 +32,6 @@ import io.garrit.android.multiplayer.Game
 import io.garrit.android.multiplayer.Player
 import io.garrit.android.multiplayer.ServerState
 import io.garrit.android.multiplayer.SupabaseService
-import io.garrit.android.multiplayer.SupabaseService.serverState
 
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -81,9 +80,10 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                     .width(280.dp)
                     .height(180.dp)
             ) {
-                items(SupabaseService.users) { player ->
+                items(viewModel.users.filter {
+                    it.id != SupabaseService.player?.id  //dubbellkolla med garrit
+                }) { player ->
                     onlinePlayers(player = player, viewModel = viewModel, isDarkMode = isDarkMode)
-
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -110,13 +110,13 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                     .width(280.dp)
                     .height(180.dp)
             ) {
-                items(SupabaseService.games) { game ->
+                items(viewModel.games) { game ->
                     challenges(navController, game, viewModel)
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            when (serverState.collectAsState().value) {
+            when (viewModel.serverState) {
                 ServerState.NOT_CONNECTED -> Text("Not Connected")
                 ServerState.LOADING_LOBBY -> CircularProgressIndicator()
                 ServerState.LOBBY -> Text("In the lobby...",
