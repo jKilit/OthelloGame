@@ -37,6 +37,11 @@ import io.garrit.android.multiplayer.SupabaseService
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkMode: Boolean) {
+    LaunchedEffect(key1 = Unit) {//launchedeffect ska lyssna på Serverstate value .collectedstate, gör en if statement under
+        navController.navigate(Screen.Game.route) {
+            popUpTo(Screen.Lobby.route) { inclusive = true }
+        }
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
@@ -130,11 +135,6 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                     CircularProgressIndicator()
                     Text("Loading Game...",color = if (isDarkMode) Color.White else Color.DarkGray
                     )
-                }
-                ServerState.GAME -> LaunchedEffect(key1 = Unit) {
-                    navController.navigate(Screen.Game.route) {
-                        popUpTo(Screen.Lobby.route) { inclusive = true }
-                    }
                 }
             }
         }
