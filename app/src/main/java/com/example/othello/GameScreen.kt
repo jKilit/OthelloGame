@@ -25,7 +25,6 @@ import androidx.navigation.NavController
 @Composable
 fun GameScreen(navController: NavController, viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
     val gameBoard = viewModel.boardState
-    val isFirstMove = viewModel.getScores() == Pair(2, 2) // Assuming this is how you determine the first move
 
     Column(
         modifier = Modifier
@@ -38,9 +37,9 @@ fun GameScreen(navController: NavController, viewModel: OthelloViewModel = viewM
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            if (isFirstMove && viewModel.isBlackTurn) {
+            if (viewModel.isBlackTurn && viewModel.isYourTurn) {
                 Text(
-                    text = "Your Turn (Black)",
+                    text = "Your Turn",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = if (isDarkMode) Color.White else Color.Black,

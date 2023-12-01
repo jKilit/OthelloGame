@@ -43,7 +43,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
         addAll(gameBoard.flatten())
     }
 
-    private var isYourTurn by mutableStateOf(false)
+    var isYourTurn by mutableStateOf(false)
     private var isBlackPlayer by mutableStateOf(false)
     val isBlackTurn
         get() = (isYourTurn && isBlackPlayer) || (!isYourTurn && !isBlackPlayer)
