@@ -1,12 +1,10 @@
 package com.example.othello
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.Button
@@ -15,19 +13,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.*
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.draw.clip
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
 fun GameScreen(navController: NavController, viewModel: OthelloViewModel = viewModel(), isDarkMode: Boolean) {
     val gameBoard = viewModel.boardState
+    val isFirstMove = viewModel.getScores() == Pair(2, 2) // Assuming this is how you determine the first move
 
     Column(
         modifier = Modifier
@@ -36,7 +34,22 @@ fun GameScreen(navController: NavController, viewModel: OthelloViewModel = viewM
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Box to separate game board from scores and turn information
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            if (isFirstMove && viewModel.isBlackTurn) {
+                Text(
+                    text = "Your Turn (Black)",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (isDarkMode) Color.White else Color.Black,
+                    modifier = Modifier
+                        .padding(16.dp)
+                )
+            }
+        }
+
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -55,7 +68,6 @@ fun GameScreen(navController: NavController, viewModel: OthelloViewModel = viewM
                 }
             }
         }
-
 
         Spacer(
             modifier = Modifier
@@ -95,7 +107,6 @@ fun GameScreen(navController: NavController, viewModel: OthelloViewModel = viewM
     }
 }
 
-
 @Composable
 fun TileView(tile: Tile, onClick: () -> Unit) {
     Button(
@@ -114,4 +125,3 @@ fun TileView(tile: Tile, onClick: () -> Unit) {
         // Empty for now
     }
 }
-
