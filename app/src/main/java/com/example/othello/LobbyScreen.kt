@@ -184,6 +184,7 @@ fun onlinePlayers(player: Player, viewModel: LobbyViewModel, isDarkMode: Boolean
     }
 }
 
+
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun challenges(navController: NavController, player: Game, viewModel: LobbyViewModel) {
