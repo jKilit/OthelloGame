@@ -37,9 +37,11 @@ import io.garrit.android.multiplayer.SupabaseService
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkMode: Boolean) {
-    LaunchedEffect(key1 = Unit) {//launchedeffect ska lyssna på Serverstate value .collectedstate, gör en if statement under
-        navController.navigate(Screen.Game.route) {
-            popUpTo(Screen.Lobby.route) { inclusive = true }
+    LaunchedEffect(key1 = Unit) {
+        if (viewModel.serverState == ServerState.LOBBY) {
+            navController.navigate(Screen.Game.route) {
+                popUpTo(Screen.Lobby.route) { inclusive = true }
+            }
         }
     }
     Surface(
@@ -67,9 +69,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
 
             Text(
                 text = "Players Online",
-
-                style=TextStyle(fontSize = 22.sp,
-                    color = if (isDarkMode) Color.White else Color.DarkGray),
+                style = TextStyle(fontSize = 22.sp, color = if (isDarkMode) Color.White else Color.DarkGray),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
             )
@@ -86,7 +86,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                     .height(180.dp)
             ) {
                 items(viewModel.users.filter {
-                    it.id != SupabaseService.player?.id  //dubbellkolla med garrit
+                    it.id != SupabaseService.player?.id
                 }) { player ->
                     onlinePlayers(player = player, viewModel = viewModel, isDarkMode = isDarkMode)
                 }
@@ -95,7 +95,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
 
             Text(
                 text = "Your Challenges",
-                style=TextStyle(
+                style = TextStyle(
                     fontSize = 22.sp,
                 ),
                 textAlign = TextAlign.Center,
@@ -120,26 +120,10 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-
-            when (viewModel.serverState) {
-                ServerState.NOT_CONNECTED -> Text("Not Connected")
-                ServerState.LOADING_LOBBY -> CircularProgressIndicator()
-                ServerState.LOBBY -> Text("In the lobby...",
-                    color = if (isDarkMode) Color.White else Color.DarkGray
-                )
-                ServerState.LOADING_GAME -> Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator()
-                    Text("Loading Game...",color = if (isDarkMode) Color.White else Color.DarkGray
-                    )
-                }
-            }
         }
     }
 }
+
 
 @Composable
 fun onlinePlayers(player: Player, viewModel: LobbyViewModel, isDarkMode: Boolean) {
@@ -182,7 +166,6 @@ fun onlinePlayers(player: Player, viewModel: LobbyViewModel, isDarkMode: Boolean
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun challenges(navController: NavController, player: Game, viewModel: LobbyViewModel) {
-
     Column() {
         Text(
             text = buildAnnotatedString {
@@ -210,6 +193,7 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
             Button(
                 onClick = {
                     viewModel.acceptGameInvitation(player)
+                    // Navigate for both players after accepting the invitation
                     navController.navigate(Screen.Game.route)
                 },
                 shape = RoundedCornerShape(10.dp),
@@ -223,10 +207,8 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                 Text(
                     text = "Accept Game",
                     textAlign = TextAlign.Center
-
                 )
             }
-
 
             Button(
                 onClick = {
@@ -248,11 +230,3 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
         }
     }
 }
-
-
-
-
-
-
-
-
