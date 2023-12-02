@@ -139,24 +139,14 @@ object SupabaseService {
             println("Create Channel")
             val lobby = _client.realtime.createChannel("lobby-${_type}")
 
-            fun List<Player>.printList(): String {
-                var s = ""
-                forEach {
-                    s += "$it, "
-                }
-                return s
-            }
-
             val presenceJob = lobby.presenceChangeFlow()
                 .onEach {
                     println(it.decodeJoinsAs<Player>())
-                    println("users 1: ${users.printList()} | ${this.player}")
                     val newUsers = it.decodeJoinsAs<Player>()
                         .filter { player ->
                             !users.contains(player)
                         }
                     users.addAll(newUsers)
-                    println("users 2: ${users.printList()} | ${this.player}")
 
                     it.decodeLeavesAs<Player>()
                         .forEach { player ->

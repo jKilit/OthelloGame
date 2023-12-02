@@ -682,4 +682,3 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
 }
-
