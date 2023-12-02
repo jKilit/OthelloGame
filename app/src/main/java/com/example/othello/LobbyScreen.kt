@@ -143,41 +143,47 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
 
 @Composable
 fun onlinePlayers(player: Player, viewModel: LobbyViewModel, isDarkMode: Boolean) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, top = 20.dp,)
-    ) {
-        Text(
-            text = player.name,
-            color = if (isDarkMode) Color.White else Color.DarkGray,
-            modifier = Modifier
-                .width(150.dp)
-                .padding(end = 10.dp)
-        )
+    val currentUser = SupabaseService.player
 
-        Button(
-            onClick = {
-                viewModel.sendGameInvitation(player)
-            },
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFD9D9D9)
-            ),
-            contentPadding = PaddingValues(0.dp),
+    // Check if the player is not the current user
+    if (currentUser != null && player.id != currentUser.id) {
+        Row(
             modifier = Modifier
-                .width(100.dp)
-                .height(25.dp)
-                .padding(start = 20.dp)
+                .fillMaxWidth()
+                .padding(start = 20.dp, top = 20.dp,)
         ) {
             Text(
-                "Challenge",
-                color = Color.Black,
-                textAlign = TextAlign.Center
+                text = player.name,
+                color = if (isDarkMode) Color.White else Color.DarkGray,
+                modifier = Modifier
+                    .width(150.dp)
+                    .padding(end = 10.dp)
             )
+
+            Button(
+                onClick = {
+                    viewModel.sendGameInvitation(player)
+                },
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFD9D9D9)
+                ),
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(25.dp)
+                    .padding(start = 20.dp)
+            ) {
+                Text(
+                    "Challenge",
+                    color = Color.Black,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
+
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
