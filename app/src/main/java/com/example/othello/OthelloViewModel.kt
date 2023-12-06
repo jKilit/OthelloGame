@@ -109,18 +109,6 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
 
 
 
-    var blackScoreString by mutableStateOf<String?>(null)
-        private set
-
-    var whiteScoreString by mutableStateOf<String?>(null)
-        private set
-
-
-    private var finalScores: Pair<Int, Int>? = null
-        private set
-
-
-
 
     // Function to handle a move
     fun makeMove(x: Int, y: Int, navController: NavController) {
@@ -139,7 +127,6 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
             }
             updateBoardState()
             flipTiles(x, y)
-            //  isBlackTurn = !isBlackTurn vänta
 
             viewModelScope.launch {
                 SupabaseService.sendTurn(x, y)
@@ -148,12 +135,10 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
                 isYourTurn = false
             }
 
-            val (blackScore, whiteScore) = getScores()
 
             // Inside makeMove function, after checkIsGameOver()
             if (checkIsGameOver()) {
                 val (blackScore, whiteScore) = getScores()
-                finalScores = Pair(blackScore, whiteScore)
                 winner = when {
                     blackScore > whiteScore -> "Black"
                     whiteScore > blackScore -> "White"
@@ -165,9 +150,6 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
                     winner == "White" -> "You lost!"
                     else -> "It's a tie"
                 }
-
-                blackScoreString = finalScores?.first?.toString()
-                whiteScoreString = finalScores?.second?.toString()
 
                 // Send the game result to Supabase
                 viewModelScope.launch {

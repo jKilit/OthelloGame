@@ -69,7 +69,6 @@ fun GameScreen(
                 modifier = Modifier
                     .size(350.dp)
                     .clip(MaterialTheme.shapes.medium)
-                    .background(MaterialTheme.colorScheme.primary)
             )
             Button(onClick = {
                 navController.navigate(Screen.Start.route)
