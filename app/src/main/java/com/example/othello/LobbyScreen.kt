@@ -1,4 +1,5 @@
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -38,9 +40,15 @@ import io.garrit.android.multiplayer.SupabaseService.serverState
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkMode: Boolean) {
+    val backgroundGradient = if (isDarkMode) {
+        Brush.verticalGradient(colors = listOf(Color(0xFF232526), Color(0xFF414345)))
+    } else {
+        Brush.verticalGradient(colors = listOf(Color(0xFF8EC5FC), Color(0xFFE0C3FC)))
+    }
     Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
+        modifier = Modifier.fillMaxSize()
+            .background(backgroundGradient),
+        color = Color.Transparent // to show the gradient
     ) {
         Column(
             modifier = Modifier

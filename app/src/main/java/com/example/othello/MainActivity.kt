@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                                     color = if (isDarkMode) Color.White else Color.Black
                                 ) },
                                 colors = TopAppBarDefaults.topAppBarColors(
-                                    containerColor = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
+                                    containerColor = if (isDarkMode) Color(0xFF232526) else MaterialTheme.colorScheme.background
                                 ),
                                 navigationIcon = {
                                     if (showBackButton) {

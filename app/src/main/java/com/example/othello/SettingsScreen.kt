@@ -22,7 +22,7 @@ fun SettingsScreen(navController: NavController, isDarkMode: Boolean , setDarkMo
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
+        color = if (isDarkMode)  Color(0xFF232526)else MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier
@@ -37,7 +37,6 @@ fun SettingsScreen(navController: NavController, isDarkMode: Boolean , setDarkMo
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            // Dark Mode toggle
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -58,17 +57,6 @@ fun SettingsScreen(navController: NavController, isDarkMode: Boolean , setDarkMo
                         setDarkMode(isChecked)
                     }
                 )
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            // Back button (TA BORT OM DET REDAN FINNS I VANLIGA MODELLEN!!!
-            Button(
-                onClick = {
-                    navController.navigateUp()
-                }
-            ) {
-                Text("Back")
             }
         }
     }
