@@ -56,7 +56,7 @@ fun GameScreen(
                 ) {
                     items(gameBoard) { tile ->
                         TileView(tile = tile, onClick = {
-                            viewModel.makeMove(tile.x, tile.y, navController)
+                            viewModel.makeMove(tile.x, tile.y)
                         })
                     }
                 }

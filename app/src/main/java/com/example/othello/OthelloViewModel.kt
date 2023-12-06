@@ -28,12 +28,11 @@ data class Tile(
 
 class OthelloViewModel : ViewModel(), SupabaseCallback {
     companion object {
-        const val BOARD_SIZE = 5
+        const val BOARD_SIZE = 6
     }
 
     private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { y -> //2d lista för logik
         List(BOARD_SIZE) { x ->
-            println("$x, $y")
             Tile(x, y, isBlack = false, isWhite = false)
         }
     }
@@ -63,7 +62,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
         }
     }
 
-    fun flip(x: Int, y: Int) { //inside viewmodel now
+    fun flip(x: Int, y: Int) { //inside viewmodel now //kan kanske använda makeBlack o makeWhite ist
         val currentNote= getTile(x,y)
         if (currentNote.isBlack) {
             currentNote.isBlack = false
@@ -111,7 +110,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
 
 
     // Function to handle a move
-    fun makeMove(x: Int, y: Int, navController: NavController) {
+    fun makeMove(x: Int, y: Int) {
         if (!isYourTurn) {
             // It's not the current player's turn
             println("Not your turn")
@@ -136,7 +135,6 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
             }
 
 
-            // Inside makeMove function, after checkIsGameOver()
             if (checkIsGameOver()) {
                 val (blackScore, whiteScore) = getScores()
                 winner = when {
