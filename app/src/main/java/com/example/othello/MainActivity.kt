@@ -51,28 +51,31 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
 
                     var isDarkMode by remember { mutableStateOf(false) }
+
                     Scaffold(
                         topBar = {
-                            TopAppBar(
-                                title = {
-                                    Text(
-                                    text = topBarTitle,
-                                    color = if (isDarkMode) Color.White else Color.Black
-                                ) },
-                                colors = TopAppBarDefaults.topAppBarColors(
-                                    containerColor = if (isDarkMode) Color(0xFF232526) else MaterialTheme.colorScheme.background
-                                ),
-                                navigationIcon = {
-                                    if (showBackButton) {
-                                        IconButton(onClick = { navController.navigateUp() }) {
-                                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                            if (showBackButton || topBarTitle.isNotEmpty()) {
+                                TopAppBar(
+                                    title = {
+                                        Text(
+                                            text = topBarTitle,
+                                            color = if (isDarkMode) Color.White else Color.Black
+                                        )
+                                    },
+                                    colors = TopAppBarDefaults.topAppBarColors(
+                                        containerColor = Color.Transparent // Ensuring transparency
+                                    ),
+                                    navigationIcon = {
+                                        if (showBackButton) {
+                                            IconButton(onClick = { navController.navigateUp() }) {
+                                                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                                            }
                                         }
                                     }
-                                }
-                            )
-
-
+                                )
+                            }
                         },
+                        containerColor = Color.Transparent,
                         content = { innerPadding ->
                             Box(
                                 modifier = Modifier
