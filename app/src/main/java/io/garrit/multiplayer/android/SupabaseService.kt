@@ -193,6 +193,8 @@ object SupabaseService {
         _lobbyJobs.clear()
         _lobby?.untrack()
         _lobby = null
+        users.clear()
+        games.clear()
     }
 
     private suspend fun joinGame(

@@ -166,7 +166,6 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
                     else -> "It's a tie"
                 }
 
-                println("Debug: Final Scores: $finalScores, Winner: $winner")
                 blackScoreString = finalScores?.first?.toString()
                 whiteScoreString = finalScores?.second?.toString()
 

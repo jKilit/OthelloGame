@@ -1,5 +1,6 @@
 package com.example.othello
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -9,12 +10,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,22 +42,39 @@ fun GameScreen(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .clip(RoundedCornerShape(20.dp))
-                .background(if (isDarkMode) Color.DarkGray else Color.LightGray)
-                .padding(6.dp)
-        ) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(OthelloViewModel.BOARD_SIZE),
-                modifier = Modifier.fillMaxSize()
+        if(!viewModel.checkIsGameOver()) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(if (isDarkMode) Color.DarkGray else Color.LightGray)
+                    .padding(6.dp)
             ) {
-                items(gameBoard) { tile ->
-                    TileView(tile = tile, onClick = {
-                        viewModel.makeMove(tile.x, tile.y, navController)
-                    })
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(OthelloViewModel.BOARD_SIZE),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(gameBoard) { tile ->
+                        TileView(tile = tile, onClick = {
+                            viewModel.makeMove(tile.x, tile.y, navController)
+                        })
+                    }
                 }
+            }
+        }
+        else{
+            Image(
+                painter = painterResource(id = R.drawable.gameover),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(350.dp)
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(MaterialTheme.colorScheme.primary)
+            )
+            Button(onClick = {
+                navController.navigate(Screen.Start.route)
+            }) {
+                Text("Back to Home")
             }
         }
 
@@ -100,7 +120,13 @@ fun GameScreen(
                             color = if (isDarkMode) Color.White else Color.DarkGray
                         )
                     } else {
-                        Text("Result: ${viewModel.finalStatus}")
+                        val (blackScore, whiteScore) = viewModel.getScores()
+                        Row {
+                            Text("Result: ${viewModel.finalStatus}")
+                        }
+                        Row{
+                            Text("  | Scores: Black:$blackScore, White:$whiteScore")
+                        }
                     }
                     if (!viewModel.checkIsGameOver()) {
                         if (viewModel.isYourTurn) {
