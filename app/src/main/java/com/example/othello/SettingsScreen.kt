@@ -1,5 +1,6 @@
 package com.example.othello
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -19,15 +21,23 @@ import com.example.othello.Screen
 
 @Composable
 fun SettingsScreen(navController: NavController, isDarkMode: Boolean , setDarkMode: (Boolean) -> Unit) {
+    val lightBackgroundGradient = Brush.verticalGradient(
+        colors = listOf(Color(0xFF8EC5FC), Color(0xFFE0C3FC))
+    )
+    val darkBackgroundGradient = Brush.verticalGradient(
+        colors = listOf(Color(0xFF232526), Color(0xFF414345))
+    )
+    val background = if (isDarkMode) darkBackgroundGradient else lightBackgroundGradient
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = if (isDarkMode)  Color(0xFF232526)else MaterialTheme.colorScheme.background
+
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
                 .fillMaxSize()
+                .background(background)
+
         ) {
             Text(
                 text = "Settings",
@@ -35,6 +45,8 @@ fun SettingsScreen(navController: NavController, isDarkMode: Boolean , setDarkMo
                     color = if (isDarkMode) Color.White else Color.Black
                 ),
                 modifier = Modifier.padding(bottom = 16.dp)
+                    .padding(16.dp)
+
             )
 
             Row(
@@ -49,6 +61,7 @@ fun SettingsScreen(navController: NavController, isDarkMode: Boolean , setDarkMo
                         color = if (isDarkMode) Color.White else Color.Black
                     ),
                     modifier = Modifier.weight(1f)
+                        .padding(16.dp)
                 )
 
                 Switch(
