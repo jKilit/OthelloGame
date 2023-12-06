@@ -73,13 +73,16 @@ fun GameScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val (blackScore, whiteScore) = viewModel.getScores()
-                Text(
-                    "Black: $blackScore  White: $whiteScore",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (isDarkMode) Color.White else Color.DarkGray
-                )
+                    if(!viewModel.checkIsGameOver()) {
+                        val (blackScore, whiteScore) = viewModel.getScores()
+                        Text("Black: $blackScore  White: $whiteScore",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (isDarkMode) Color.White else Color.DarkGray)
+                    }
+                    else{
+                        Text("GAME IS OVER")
+                    }
 
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -89,20 +92,25 @@ fun GameScreen(
                 ) {
 
                     val turnText = if (viewModel.isBlackTurn) "Black's Turn" else "White's Turn"
-                    Text(
-                        turnText,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = if (isDarkMode) Color.White else Color.DarkGray
-                    )
-
-                    if (viewModel.isYourTurn) {
+                    if (!viewModel.checkIsGameOver()) {
                         Text(
-                            " (Your Turn)",
-                            fontSize = 20.sp,
+                            turnText,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (isDarkMode) Color.Cyan else Color.Blue
+                            color = if (isDarkMode) Color.White else Color.DarkGray
                         )
+                    } else {
+                        Text("Result: ${viewModel.finalStatus}")
+                    }
+                    if (!viewModel.checkIsGameOver()) {
+                        if (viewModel.isYourTurn) {
+                            Text(
+                                " (Your Turn)",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (isDarkMode) Color.Cyan else Color.Blue
+                            )
+                        }
                     }
                 }
             }

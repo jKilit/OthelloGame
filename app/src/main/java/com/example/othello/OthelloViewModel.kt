@@ -28,7 +28,7 @@ data class Tile(
 
 class OthelloViewModel : ViewModel(), SupabaseCallback {
     companion object {
-        const val BOARD_SIZE = 8
+        const val BOARD_SIZE = 5
     }
 
     private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { y -> //2d lista för logik
@@ -99,13 +99,15 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
         return true // No valid moves left, game is over
     }
 
-    // MutableState to track if the game is over
-    var isGameOver by mutableStateOf(false)
-        private set
 
     // MutableState to store the winner
     var winner by mutableStateOf<String?>(null)
         private set
+
+    var finalStatus by mutableStateOf<String?>(null)
+        private set
+
+
 
     var blackScoreString by mutableStateOf<String?>(null)
         private set
@@ -147,8 +149,8 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
             }
 
             val (blackScore, whiteScore) = getScores()
-            println("Debug: Black Score: $blackScore, White Score: $whiteScore")
 
+            // Inside makeMove function, after checkIsGameOver()
             if (checkIsGameOver()) {
                 val (blackScore, whiteScore) = getScores()
                 finalScores = Pair(blackScore, whiteScore)
@@ -157,13 +159,27 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
                     whiteScore > blackScore -> "White"
                     else -> "It's a tie"
                 }
+
+                finalStatus = when {
+                    winner == "Black"  -> "You won!"
+                    winner == "White" -> "You lost!"
+                    else -> "It's a tie"
+                }
+
                 println("Debug: Final Scores: $finalScores, Winner: $winner")
                 blackScoreString = finalScores?.first?.toString()
                 whiteScoreString = finalScores?.second?.toString()
 
-
-                navController.navigate("${Screen.GameOver.route}/$winner/$blackScoreString/$whiteScoreString")
+                // Send the game result to Supabase
+                viewModelScope.launch {
+                    SupabaseService.gameFinish(status = when (winner) {
+                        "Black" -> GameResult.LOSE
+                        "White" -> GameResult.WIN
+                        else -> GameResult.DRAW
+                    })
+                }
             }
+
         }
     }
 
@@ -217,14 +233,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
 
-    // Place a piece on the board  //Behövs denna verkligen?
-    private fun putPiece(x: Int, y: Int, isBlack: Boolean) {
-        if (isBlack) {
-            makeBlack(x,y)
-        } else {
-            makeWhite(x,y)
-        }
-    }
+
 
     // Flip tiles based on the placed piece
     private fun flipTiles(x: Int, y: Int) {
@@ -678,7 +687,14 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
     override suspend fun finishHandler(status: GameResult) {
-        println("Not yet implemented")
+        // Handle the game result, you can update UI or take any necessary actions
+        println("Game finished with result: $status")
+        finalStatus = when {
+            status == GameResult.WIN  -> "You won!"
+            status == GameResult.LOSE -> "You lost!"
+            else -> "It's a tie"
+        }
     }
+
 
 }

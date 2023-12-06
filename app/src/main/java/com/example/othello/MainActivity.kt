@@ -93,15 +93,6 @@ class MainActivity : ComponentActivity() {
                                         showBackButton = true
                                         GameScreen(navController = navController, viewModel = viewModel(), isDarkMode = isDarkMode)
                                     }
-                                    composable(route = "${Screen.GameOver.route}/{winner}/{blackScore}/{whiteScore}") { backStackEntry ->
-                                        val winner = backStackEntry.arguments?.getString("winner") ?: ""
-                                        val blackScore = backStackEntry.arguments?.getString("blackScore") ?: "0"
-                                        val whiteScore = backStackEntry.arguments?.getString("whiteScore") ?: "0"
-
-                                        topBarTitle = "Game Over"
-                                        showBackButton = true
-                                        GameOverScreen(viewModel = viewModel(), winner = winner, blackScore = blackScore, whiteScore = whiteScore)
-                                    }
                                     composable(route = Screen.Settings.route) {
                                         topBarTitle = "Back to Home"
                                         showBackButton = true
