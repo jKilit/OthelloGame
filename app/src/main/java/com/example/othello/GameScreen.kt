@@ -120,10 +120,10 @@ fun GameScreen(
                         )
                     } else {
                         val (blackScore, whiteScore) = viewModel.getScores()
-                        Row {
+                        Column {
                             Text("Result: ${viewModel.finalStatus}")
                         }
-                        Row{
+                        Column{
                             Text("  | Scores: Black:$blackScore, White:$whiteScore")
                         }
                     }
