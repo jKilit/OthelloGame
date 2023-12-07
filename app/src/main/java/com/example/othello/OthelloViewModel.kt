@@ -680,6 +680,4 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
             else -> "It's a tie"
         }
     }
-
-
 }

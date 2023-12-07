@@ -33,7 +33,30 @@ import io.garrit.android.multiplayer.Player
 fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkMode: Boolean) {
     var username by remember { mutableStateOf("") }
 
-    // Define a gradient background
+    @Composable
+    fun Validation(text: String, buttonTitle: String, onValidInput: () -> Unit) {
+        val context = LocalContext.current
+        Button(
+            onClick = {
+                if (text.length < 3) {
+                    Toast.makeText(context, "Title more than 3 characters", Toast.LENGTH_LONG)
+                        .show()
+                } else if (text.length > 20) {
+                    Toast.makeText(context, "Text less than 20 characters", Toast.LENGTH_LONG)
+                        .show()
+                } else {
+                    onValidInput()
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+
+        ) {
+            Text(text = buttonTitle, fontSize = 22.sp)
+        }
+    }
+
     val lightBackgroundGradient = Brush.verticalGradient(
         colors = listOf(Color(0xFF8EC5FC), Color(0xFFE0C3FC))
     )
@@ -46,9 +69,10 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
         modifier = Modifier.fillMaxSize(),
         color = if (isDarkMode) Color.DarkGray else MaterialTheme.colorScheme.background
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(background)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(background)
         ) {
             Column(
                 modifier = Modifier
@@ -60,7 +84,9 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 Image(
                     painter = painterResource(id = R.drawable.othello), // Consider updating the logo for a modern look
                     contentDescription = null,
-                    modifier = Modifier.size(150.dp).align(Alignment.CenterHorizontally)
+                    modifier = Modifier
+                        .size(150.dp)
+                        .align(Alignment.CenterHorizontally)
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -96,21 +122,9 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 Spacer(modifier = Modifier.height(20.dp))
 
                 // Validation Button with new style
-                ElevatedButton(
-                    onClick = {
-                        viewModel.joinLobby(Player(name = username))
-                        navController.navigate(Screen.Lobby.route)
-                    },
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                ) {
-                    Text(
-                        text = "Join Lobby",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                Validation(text = username, buttonTitle = "Go to lobby") {
+                    viewModel.joinLobby(Player(name = username))
+                    navController.navigate(Screen.Lobby.route)
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
