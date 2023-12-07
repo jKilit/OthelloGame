@@ -82,7 +82,7 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.othello), // Consider updating the logo for a modern look
+                    painter = painterResource(id = R.drawable.othello),
                     contentDescription = null,
                     modifier = Modifier
                         .size(150.dp)
@@ -110,6 +110,7 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                     label = { Text("Enter your username") },
                     singleLine = true,
                     textStyle = TextStyle(
+                        color = if (isDarkMode) Color.White else Color.Black,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
@@ -145,7 +146,7 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
 
                 // Game Description Text
                 Text(
-                    text = "About Othello:\nOthello is a classic strategy board game for two players. It's also known as Reversi. We hope you will enjoy it!",
+                    text = "About Othello:\nOthello is a classic strategy board game for two players.  We hope you will enjoy it!",
                     color = if (isDarkMode) Color.White else Color.Black,
                     style = TextStyle(
                         fontSize = 16.sp,

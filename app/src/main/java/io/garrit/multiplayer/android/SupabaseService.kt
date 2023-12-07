@@ -147,7 +147,6 @@ object SupabaseService {
                             !users.contains(player)
                         }
                     users.addAll(newUsers)
-
                     it.decodeLeavesAs<Player>()
                         .forEach { player ->
                             users.remove(player)

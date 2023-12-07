@@ -28,7 +28,7 @@ data class Tile(
 
 class OthelloViewModel : ViewModel(), SupabaseCallback {
     companion object {
-        const val BOARD_SIZE = 5
+        const val BOARD_SIZE = 8
     }
 
     private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { y -> //2d lista för logik

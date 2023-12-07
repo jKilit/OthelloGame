@@ -1,4 +1,5 @@
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.othello.LobbyViewModel
+import com.example.othello.R
 import com.example.othello.Screen
 import io.garrit.android.multiplayer.Game
 import io.garrit.android.multiplayer.Player
@@ -85,7 +88,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 modifier = Modifier
                     .border(
                         width = 6.dp,
-                        color = Color.LightGray,
+                        color = Color.White,
                         shape = RoundedCornerShape(10.dp)
                     )
                     .width(280.dp)
@@ -114,7 +117,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 modifier = Modifier
                     .border(
                         width = 6.dp,
-                        color = Color.LightGray,
+                        color = Color.White,
                         shape = RoundedCornerShape(10.dp)
                     )
                     .width(280.dp)
@@ -146,6 +149,18 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                         popUpTo(Screen.Lobby.route) { inclusive = true }
                     }
                 }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.othello),
+                    contentDescription = null,
+                    modifier = Modifier.size(150.dp)
+                )
             }
         }
     }
@@ -262,5 +277,6 @@ fun challenges(navController: NavController, player: Game, viewModel: LobbyViewM
                 )
             }
         }
+
     }
 }
