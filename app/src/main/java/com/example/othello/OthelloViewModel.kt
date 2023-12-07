@@ -28,7 +28,7 @@ data class Tile(
 
 class OthelloViewModel : ViewModel(), SupabaseCallback {
     companion object {
-        const val BOARD_SIZE = 6
+        const val BOARD_SIZE = 5
     }
 
     private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { y -> //2d lista för logik
@@ -106,6 +106,8 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     var finalStatus by mutableStateOf<String?>(null)
         private set
 
+    var gameOver by mutableStateOf(false)
+
 
 
 
@@ -136,6 +138,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
 
 
             if (checkIsGameOver()) {
+                gameOver = true
                 val (blackScore, whiteScore) = getScores()
                 winner = when {
                     blackScore > whiteScore -> "Black"
@@ -144,16 +147,18 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
                 }
 
                 finalStatus = when {
-                    winner == "Black"  -> "You won!"
-                    winner == "White" -> "You lost!"
+                    winner == "Black" && isBlackPlayer -> "You Won!"
+                    winner == "White" && isBlackPlayer -> "You Lost!"
+                    winner == "Black" && !isBlackPlayer -> "You Lost!"
+                    winner == "White" && !isBlackPlayer -> "You Won!"
                     else -> "It's a tie"
                 }
 
                 // Send the game result to Supabase
                 viewModelScope.launch {
-                    SupabaseService.gameFinish(status = when (winner) {
-                        "Black" -> GameResult.LOSE
-                        "White" -> GameResult.WIN
+                    SupabaseService.gameFinish(status = when (finalStatus) {
+                        "You Won!" -> GameResult.LOSE
+                        "You Lost!" -> GameResult.WIN
                         else -> GameResult.DRAW
                     })
                 }
@@ -633,7 +638,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
     override suspend fun playerReadyHandler() {
-        SupabaseService.playerReady()
+        //SupabaseService.playerReady()
         println("Not yet implemented")
 
     }
@@ -667,6 +672,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
 
     override suspend fun finishHandler(status: GameResult) {
         // Handle the game result, you can update UI or take any necessary actions
+        gameOver = true
         println("Game finished with result: $status")
         finalStatus = when {
             status == GameResult.WIN  -> "You won!"
