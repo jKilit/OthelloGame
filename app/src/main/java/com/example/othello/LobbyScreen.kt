@@ -48,12 +48,13 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
     Surface(
         modifier = Modifier.fillMaxSize()
             .background(backgroundGradient),
-        color = Color.Transparent // to show the gradient
+        color = Color.Transparent
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+                .padding(top = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -67,6 +68,7 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 textAlign = TextAlign.Center,
                 modifier = Modifier
             )
+
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(

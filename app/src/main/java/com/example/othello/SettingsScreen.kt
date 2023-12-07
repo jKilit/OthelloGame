@@ -46,6 +46,7 @@ fun SettingsScreen(navController: NavController, isDarkMode: Boolean , setDarkMo
                 ),
                 modifier = Modifier.padding(bottom = 16.dp)
                     .padding(16.dp)
+                    .padding(top = 40.dp)
 
             )
 

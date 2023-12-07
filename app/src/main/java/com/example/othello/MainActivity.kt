@@ -4,6 +4,7 @@ import LobbyScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -54,7 +55,6 @@ class MainActivity : ComponentActivity() {
 
                     Scaffold(
                         topBar = {
-                            if (showBackButton || topBarTitle.isNotEmpty()) {
                                 TopAppBar(
                                     title = {
                                         Text(
@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
                                         )
                                     },
                                     colors = TopAppBarDefaults.topAppBarColors(
-                                        containerColor = Color.Transparent // Ensuring transparency
+                                        containerColor = Color.Transparent
                                     ),
                                     navigationIcon = {
                                         if (showBackButton) {
@@ -73,13 +73,13 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                 )
-                            }
                         },
-                        containerColor = Color.Transparent,
+                        modifier = Modifier
+                            .background(Color.Transparent),
                         content = { innerPadding ->
                             Box(
                                 modifier = Modifier
-                                    .padding(innerPadding)
+                                    //.padding(innerPadding)
                                     .fillMaxSize()
                             ) {
                                 NavHost(
