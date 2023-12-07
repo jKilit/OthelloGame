@@ -54,7 +54,7 @@ fun GameScreen(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        if(!viewModel.checkIsGameOver()) {
+        if(!viewModel.gameOver) {
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -104,7 +104,7 @@ fun GameScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                    if(!viewModel.checkIsGameOver()) {
+                    if(!viewModel.gameOver) {
                         val (blackScore, whiteScore) = viewModel.getScores()
                         Text("Black: $blackScore  White: $whiteScore",
                         fontSize = 16.sp,
@@ -123,7 +123,7 @@ fun GameScreen(
                 ) {
 
                     val turnText = if (viewModel.isBlackTurn) "Black's Turn" else "White's Turn"
-                    if (!viewModel.checkIsGameOver()) {
+                    if (!viewModel.gameOver) {
                         Text(
                             turnText,
                             fontSize = 18.sp,
@@ -139,7 +139,7 @@ fun GameScreen(
                             Text("  | Scores: Black:$blackScore, White:$whiteScore")
                         }
                     }
-                    if (!viewModel.checkIsGameOver()) {
+                    if (!viewModel.gameOver) {
                         if (viewModel.isYourTurn) {
                             Text(
                                 " (Your Turn)",
