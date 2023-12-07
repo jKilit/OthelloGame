@@ -146,7 +146,7 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
 
                 // Game Description Text
                 Text(
-                    text = "About Othello:\nOthello is a classic strategy board game for two players.  We hope you will enjoy it!",
+                    text = "About Othello:\nOthello is a classic strategy board game for two players. We hope you will enjoy it!",
                     color = if (isDarkMode) Color.White else Color.Black,
                     style = TextStyle(
                         fontSize = 16.sp,
@@ -171,6 +171,15 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 ) {
                     Text("View Rules", fontSize = 18.sp)
                 }
+                Spacer(modifier = Modifier.height(40.dp))
+                Text(
+                    text = "© 2023 DOBOJxKELLEF. All Rights Reserved.",
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = if (isDarkMode) Color.White else Color.Black,
+                        fontSize = 12.sp
+                    ),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
             }
         }
     }

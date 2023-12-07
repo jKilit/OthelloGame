@@ -87,6 +87,15 @@ fun RulesScreen(isDarkMode: Boolean) {
                     modifier = Modifier.size(150.dp)
                 )
             }
+            Spacer(modifier = Modifier.height(40.dp))
+            Text(
+                text = "© 2023 DOBOJxKELLEF. All Rights Reserved.",
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = if (isDarkMode) Color.White else Color.Black,
+                    fontSize = 12.sp
+                ),
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
         }
     }
 }
