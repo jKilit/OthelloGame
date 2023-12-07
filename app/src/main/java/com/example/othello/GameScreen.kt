@@ -131,13 +131,7 @@ fun GameScreen(
                             color = if (isDarkMode) Color.White else Color.DarkGray
                         )
                     } else {
-                        val (blackScore, whiteScore) = viewModel.getScores()
-                        Column {
                             Text("Result: ${viewModel.finalStatus}")
-                        }
-                        Column{
-                            Text("  | Scores: Black:$blackScore, White:$whiteScore")
-                        }
                     }
                     if (!viewModel.gameOver) {
                         if (viewModel.isYourTurn) {
@@ -148,6 +142,15 @@ fun GameScreen(
                                 color = if (isDarkMode) Color.Cyan else Color.Blue
                             )
                         }
+                    }
+                }
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (viewModel.gameOver) {
+                        val (blackScore, whiteScore) = viewModel.getScores()
+                        Text("Scores: Black:$blackScore, White:$whiteScore")
                     }
                 }
             }
