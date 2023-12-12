@@ -39,7 +39,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
 
     // MutableStateList is used to observe changes to the list in Compose
     val boardState = mutableStateListOf<Tile>().apply {//skapar en 1d lista av 2d gameboard och lägger den i boardstate
-        addAll(gameBoard.flatten())
+        addAll(gameBoard.flatten()) //flatten gör till 1D, plattar ut
     }
 
     var isYourTurn by mutableStateOf(false)
@@ -130,10 +130,10 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
             flipTiles(x, y)
 
             viewModelScope.launch {
-                SupabaseService.sendTurn(x, y)
+                SupabaseService.sendTurn(x, y) //send turn to opponent, with the new coordinates
                 SupabaseService.releaseTurn()
 
-                isYourTurn = false
+                isYourTurn = false //makes the variable false after making the move and fixing everything
             }
 
 
@@ -177,14 +177,14 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
             for (j in -1..1) {
                 if (i == 0 && j == 0) continue // Skip the current tile
 
-                val newX = tile.x + i
-                val newY = tile.y + j
+                val newX = tile.x + i //används senare för att skapa adjacenttile, x-koordinat för den
+                val newY = tile.y + j //används senare för att skapa adjacenttile, y-koordinat för den
 
-                if (newX in 0 until BOARD_SIZE && newY in 0 until BOARD_SIZE) {
-                    val adjacentTile = getTile(newX, newY)
+                if (newX in 0 until BOARD_SIZE && newY in 0 until BOARD_SIZE) { //OM den nya tilen (adjacent) ligger innanför ytan i både X och Y
+                    val adjacentTile = getTile(newX, newY)  //då, skapa variabel som sedan skickas vidare
 
-                    if (isValidDirection(tile, adjacentTile, i, j)) {
-                        return true
+                    if (isValidDirection(tile, adjacentTile, i, j)) {  //skicka in current tile, adjacent och i, j index från nested looparna
+                        return true //om det är valid direction
                     }
                 }
             }
@@ -195,9 +195,9 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
 
     private fun isValidDirection(tile: Tile, adjacentTile: Tile, deltaX: Int, deltaY: Int): Boolean {
         // Check if the adjacent tile is of the opposite color
-        if ((isBlackTurn && adjacentTile.isWhite) || (!isBlackTurn && adjacentTile.isBlack)) {
-            var x = tile.x + deltaX
-            var y = tile.y + deltaY
+        if ((isBlackTurn && adjacentTile.isWhite) || (!isBlackTurn && adjacentTile.isBlack)) { //om adjacentTile är motsatsen mot nuvarande turn färg
+            var x = tile.x + deltaX //tiles koordinater med deltavärden på, i och j från förra loopen
+            var y = tile.y + deltaY  //som newX och newY egentligen!
 
             while (x in 0 until BOARD_SIZE && y in 0 until BOARD_SIZE) {
                 val currentTile = getTile(x, y)
@@ -228,7 +228,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
 
     private fun flipHorizontal(x: Int, y: Int) {
         if (hasFlippableTilesHorizontal(x, y)) {
-            val currentTile = getTile(x, y)
+            val currentTile = getTile(x, y) //behövs inte egentligen? Då vi redan har tagit in x och y
 
             // Flip tiles to the left
             if (hasFlippableTilesHorizontalDirection(x, y, -1)) {
@@ -244,7 +244,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
 
     private fun flipVertical(x: Int, y: Int) {
         if (hasFlippableTilesVertical(x, y)) {
-            val currentTile = getTile(x, y)
+            val currentTile = getTile(x, y) //behövs inte egentligen? Då vi redan har tagit in x och y
 
             // Flip tiles up
             if (hasFlippableTilesVerticalDirection(x, y, -1)) {
@@ -259,7 +259,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
     private fun hasFlippableTilesHorizontalDirection(startX: Int, startY: Int, deltaX: Int): Boolean { //https://chat.openai.com/share/23507c7b-ba03-40d8-841c-504827580221
-        val currentTile = getTile(startX, startY)
+        val currentTile = getTile(startX, startY) //behövs inte egentligen? Då vi redan har tagit in x och y
 
         var x = startX + deltaX
 
@@ -626,7 +626,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
         return boardState[y * BOARD_SIZE + x]
     }
 
-    private fun updateBoardState() {
+    private fun updateBoardState() { //osäker om nödvändig
         boardState.clear()
         boardState.addAll(gameBoard.flatten())
     }
@@ -666,7 +666,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
 
-    override suspend fun answerHandler(status: ActionResult) {
+    override suspend fun answerHandler(status: ActionResult) { //osäker om den behövs, finns ju actionhandler osv
         updateBoardState()
     }
 
