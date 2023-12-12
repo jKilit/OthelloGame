@@ -31,9 +31,9 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
         const val BOARD_SIZE = 8
     }
 
-    private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { y -> //2d lista för logik
+    private val gameBoard: List<List<Tile>> = List(BOARD_SIZE) { y -> //2d lista för logik, nested
         List(BOARD_SIZE) { x ->
-            Tile(x, y, isBlack = false, isWhite = false)
+            Tile(x, y, isBlack = false, isWhite = false) //skapar tiles med koordinater.
         }
     }
 
@@ -126,13 +126,14 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
             } else {
                 makeWhite(x, y)
             }
-            updateBoardState()
+            updateBoardState() //osäker om den är onödig
             flipTiles(x, y)
 
             viewModelScope.launch {
                 SupabaseService.sendTurn(x, y) //send turn to opponent, with the new coordinates
                 SupabaseService.releaseTurn()
 
+                //om du har lyckats skicka din tur, gör nedan till false
                 isYourTurn = false //makes the variable false after making the move and fixing everything
             }
 

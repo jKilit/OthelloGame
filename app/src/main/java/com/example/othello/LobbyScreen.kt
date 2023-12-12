@@ -129,13 +129,13 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            when (serverState.collectAsState().value) {
+            when (serverState.collectAsState().value) { //launchedEffect needs to be here? in our case
                 ServerState.NOT_CONNECTED -> Text("Not Connected")
                 ServerState.LOADING_LOBBY -> CircularProgressIndicator()
                 ServerState.LOBBY -> Text("In the lobby...",
                     color = if (isDarkMode) Color.White else Color.DarkGray
                 )
-                ServerState.LOADING_GAME -> Column(
+                ServerState.LOADING_GAME -> Column(  //never used? in our case
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -144,9 +144,9 @@ fun LobbyScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                     Text("Loading Game...",color = if (isDarkMode) Color.White else Color.DarkGray
                     )
                 }
-                ServerState.GAME -> LaunchedEffect(key1 = Unit) {
+                ServerState.GAME -> LaunchedEffect(key1 = Unit) {  //like a one-time action that is triggered when a composable is initially launched or recomposed.
                     navController.navigate(Screen.Game.route) {
-                        popUpTo(Screen.Lobby.route) { inclusive = true }
+                        popUpTo(Screen.Lobby.route) { inclusive = true } //when navigating to the "Game" screen, it wants to clear (or pop) all the screens in the back stack up to the "Lobby" screen, and it includes the "Lobby" screen itself.
                     }
                 }
             }
