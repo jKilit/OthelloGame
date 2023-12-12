@@ -27,7 +27,7 @@ data class Tile(
 }
 
 class OthelloViewModel : ViewModel(), SupabaseCallback {
-    companion object {
+    companion object { //singleton
         const val BOARD_SIZE = 8
     }
 
@@ -54,9 +54,9 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
         makeWhite(4, 3)
         makeBlack(4, 4)
 
-        SupabaseService.callbackHandler = this
+        SupabaseService.callbackHandler = this //andreas och ner
 
-        currentGame?.let { currentGame ->
+        currentGame?.let { currentGame -> //gör så den svarta börjar !
             isBlackPlayer = SupabaseService.player?.id == currentGame.player1.id
             isYourTurn = isBlackPlayer
         }
@@ -73,13 +73,13 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
         }
     }
 
-    fun makeBlack(x: Int, y: Int) {
+    fun makeBlack(x: Int, y: Int) {  //kan avändas i flip
         var current= getTile(x,y)
         current.isBlack = true
         current.isWhite = false
     }
 
-    fun makeWhite(x: Int, y: Int) {
+    fun makeWhite(x: Int, y: Int) { //kan avändas i flip
         var current= getTile(x,y)
         current.isBlack = false
         current.isWhite = true
@@ -649,7 +649,7 @@ class OthelloViewModel : ViewModel(), SupabaseCallback {
     }
 
 
-    override suspend fun actionHandler(x: Int, y: Int) {
+    override suspend fun actionHandler(x: Int, y: Int) {  //den andra spelarens view av MakeMove kan man säga
         val tile = getTile(x, y)
 
         // Only proceed if the tile is empty

@@ -159,7 +159,7 @@ fun GameScreen(
 }
 
 @Composable
-fun TileView(tile: Tile, onClick: () -> Unit) {
+fun TileView(tile: Tile, onClick: () -> Unit) {  //fixar bara utseendet på tilen
     Button(
         onClick = onClick,
         modifier = Modifier

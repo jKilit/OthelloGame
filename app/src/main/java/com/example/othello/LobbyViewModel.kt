@@ -12,12 +12,12 @@ import kotlinx.coroutines.launch
 class LobbyViewModel : ViewModel() {
 
 
-    //BARA BÖRJAN, en mall! h
-    sealed class Event {
-        data class JoinGame(val game: Game) : Event()
-    }
 
-    private val eventChannel = Channel<Event>(Channel.BUFFERED)
+  /*  sealed class Event {   DENNA SKULLE BORT EGENTLIGEn
+        data class JoinGame(val game: Game) : Event()
+    }  */
+
+  /*  private val eventChannel = Channel<Event>(Channel.BUFFERED)  DENNA SKULLE EGENTLIGEN BORT!!
     val events = eventChannel.receiveAsFlow()
 
 
@@ -25,7 +25,7 @@ class LobbyViewModel : ViewModel() {
         viewModelScope.launch {
             eventChannel.send(Event.JoinGame(game))
         }
-    }
+    } */
     fun sendGameInvitation(opponent: Player) {
         viewModelScope.launch {
             SupabaseService.invite(opponent)
@@ -47,10 +47,10 @@ class LobbyViewModel : ViewModel() {
             SupabaseService.joinLobby(player)
         }
     }
+    /* DENNA ANVÄNDS EJ
     fun leaveLobby(){
         viewModelScope.launch {
             SupabaseService.leaveLobby()
-        }
-    }
+        } */
 
 }

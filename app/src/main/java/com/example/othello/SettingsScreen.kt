@@ -39,7 +39,7 @@ fun SettingsScreen(
     val darkBackgroundGradient = Brush.verticalGradient(
         colors = listOf(Color(0xFF232526), Color(0xFF414345))
     )
-    val background = if (isDarkMode) darkBackgroundGradient else lightBackgroundGradient
+    val background = if (isDarkMode) darkBackgroundGradient else lightBackgroundGradient //should be var (bara i settingsscreen?)
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -85,7 +85,6 @@ fun SettingsScreen(
                         setDarkMode(isChecked)
                     }
                 )
-
             }
         }
         Box(

@@ -123,7 +123,7 @@ fun StartScreen(navController: NavController, viewModel: LobbyViewModel, isDarkM
                 Spacer(modifier = Modifier.height(20.dp))
 
                 // Validation Button with new style
-                Validation(text = username, buttonTitle = "Go to lobby") {
+                Validation(text = username, buttonTitle = "Go to lobby") { //the code after is onValidInpur
                     viewModel.joinLobby(Player(name = username))
                     navController.navigate(Screen.Lobby.route)
                 }
